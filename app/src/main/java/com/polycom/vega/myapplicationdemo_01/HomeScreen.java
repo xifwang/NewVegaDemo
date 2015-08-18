@@ -56,17 +56,20 @@ public class HomeScreen extends AppCompatActivity implements IActivity, IDataBin
         this.navigationListView = (ListView) findViewById(R.id.navigationListView);
         this.navigationListView.setAdapter(this.navigationListAdapter);
         this.navigationListView.setOnItemClickListener(this);
-
-        ScaleAnimation animation = new ScaleAnimation(0, 1, 0, 1);
-        animation.setDuration(500);
-        LayoutAnimationController animationController = new LayoutAnimationController(animation, 0.3f);
-
-        this.navigationListView.setLayoutAnimation(animationController);
     }
 
     @Override
     public void initComponentState() {
 
+    }
+
+    @Override
+    public void initAnimation() {
+        ScaleAnimation animation = new ScaleAnimation(0, 1, 0, 1);
+        animation.setDuration(500);
+        LayoutAnimationController animationController = new LayoutAnimationController(animation, 0.3f);
+
+        this.navigationListView.setLayoutAnimation(animationController);
     }
 
     @Override

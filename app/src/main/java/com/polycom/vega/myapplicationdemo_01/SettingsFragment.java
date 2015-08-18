@@ -68,6 +68,11 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
     }
 
     @Override
+    public void initAnimation() {
+
+    }
+
+    @Override
     public void registerNotification() {
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(this.broadcastReceiver, new IntentFilter("rest_system_time"));
     }

@@ -37,18 +37,21 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
 
     @Override
     public void initComponent() {
-        ScaleAnimation scaleAnimation = new ScaleAnimation(0, 1, 0, 1);
-        scaleAnimation.setDuration(1000);
-        LayoutAnimationController animationController = new LayoutAnimationController(scaleAnimation, 0.1f);
-
-        this.view.setLayoutAnimation(animationController);
-
         this.contentTextView = (TextView) this.view.findViewById(R.id.fragementhomescreen_contentTextView);
     }
 
     @Override
     public void initComponentState() {
 
+    }
+
+    @Override
+    public void initAnimation() {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0, 1, 0, 1);
+        scaleAnimation.setDuration(1000);
+        LayoutAnimationController animationController = new LayoutAnimationController(scaleAnimation, 0.1f);
+
+        this.view.setLayoutAnimation(animationController);
     }
 
     @Override

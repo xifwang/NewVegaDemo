@@ -125,44 +125,10 @@ public class PairActivity extends AppCompatActivity implements IActivity {
     }
 
     @Override
-    public void registerNotification() {
-
+    public void initAnimation() {
     }
 
-//    private class DownloadHelper extends AsyncTask<String, Integer, String> {
-//        @Override
-//        protected void onPreExecute() {
-//            return;
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            String result = "No data.";
-//
-//            try {
-//                result = new EasyHttpClient().get(params[0]);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//
-//            return result;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            JSONObject jsonObject = null;
-//
-//            try {
-//                jsonObject = new JSONObject(result);
-//
-//                String build = jsonObject.getString("build");
-//            } catch (JSONException ex) {
-//                ex.printStackTrace();
-//            }
-//
-//            ((TextView) findViewById(R.id.textView)).setText(result.toString());
-//
-//            return;
-//        }
-//    }
+    @Override
+    public void registerNotification() {
+    }
 }
