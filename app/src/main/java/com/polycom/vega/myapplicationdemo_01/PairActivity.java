@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.Response;
@@ -19,8 +20,9 @@ import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.rest.System;
 
 public class PairActivity extends AppCompatActivity implements IActivity {
-    EditText urlTextEdit = null;
-    Button pairButton = null;
+    private EditText urlTextEdit = null;
+    private Button pairButton = null;
+    private TextView errorMessageTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class PairActivity extends AppCompatActivity implements IActivity {
 
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
+            errorMessageTextView.setText("");
+
             if (urlTextEdit.getText().toString() == "") {
                 return;
             }
@@ -69,7 +73,7 @@ public class PairActivity extends AppCompatActivity implements IActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                errorMessageTextView.setText(error.getMessage());
             }
         });
 
@@ -86,7 +90,7 @@ public class PairActivity extends AppCompatActivity implements IActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -106,8 +110,9 @@ public class PairActivity extends AppCompatActivity implements IActivity {
 
     @Override
     public void initComponent() {
-        urlTextEdit = (EditText) findViewById(R.id.urlEditText);
-        pairButton = (Button) findViewById(R.id.pairButton);
+        this.urlTextEdit = (EditText) findViewById(R.id.urlEditText);
+        this.pairButton = (Button) findViewById(R.id.pairButton);
+        this.errorMessageTextView = (TextView) findViewById(R.id.errorMessageTextView);
     }
 
     @Override

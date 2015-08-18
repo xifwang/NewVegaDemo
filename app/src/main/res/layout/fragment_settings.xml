@@ -11,4 +11,10 @@
         android:text="Settings"
         android:id="@+id/settingsflagment_titleTextView"
         android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/settingfragment_errorTextView"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

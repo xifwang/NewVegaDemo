@@ -34,6 +34,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
     private View view;
     private Timer timer;
     private TextView titleTextView;
+    private TextView errorTextView;
     private BroadcastReceiver broadcastReceiver;
     private HashMap<String, String> eventMap;
 
@@ -52,6 +53,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
     @Override
     public void initComponent() {
         this.titleTextView = (TextView) this.view.findViewById(R.id.settingsflagment_titleTextView);
+        this.errorTextView = (TextView) this.view.findViewById(R.id.settingfragment_errorTextView);
 
         this.broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -87,6 +89,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
         HttpsTrustHelper.allowAllSSL();
 
         this.timer = new Timer();
+
         timer.scheduleAtFixedRate(systemTimerTask, 0, 10000);
     }
 
@@ -110,7 +113,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
             @Override
             public void onErrorResponse(VolleyError error) {
                 timer.cancel();
-                titleTextView.setText(error.getMessage());
+                errorTextView.setText(error.getMessage());
             }
         });
 

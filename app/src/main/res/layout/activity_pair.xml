@@ -11,16 +11,24 @@
         android:id="@+id/urlEditText"
         android:width="400dp"
         android:text="172.21.97.190"
-        android:layout_above="@+id/pairButton"
+        android:singleLine="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:singleLine="true" />
+        android:layout_marginTop="29dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pair"
         android:id="@+id/pairButton"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/urlEditText"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/errorMessageTextView"
+        android:layout_below="@+id/pairButton"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
