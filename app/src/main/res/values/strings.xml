@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Vega</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_home_screen">Home Screen</string>
+    <string name="navigationmenu_home">Home</string>
+    <string name="navigationmenu_placeACall">Place A Call</string>
+    <string name="navigationmenu_showContent">Show Content</string>
+    <string name="navigationmenu_settings">Settings</string>
+    <string name="navigationmenu_help">Help</string>
+    <string name="title_activity_demo">DemoActivity</string>
+    <string name="hello_world">Hello world!</string>
+</resources>
