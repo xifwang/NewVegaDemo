@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,9 @@ import com.polycom.vega.fundamental.Constants;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,7 +35,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
     private Timer timer;
     private TextView titleTextView;
     private BroadcastReceiver broadcastReceiver;
-    private ArrayList<String> eventList;
+    private HashMap<String, String> eventMap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
         this.broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                titleTextView.setText(intent.getAction());
+                titleTextView.setText(DateFormat.format("yyyy-MM-dd HH:mm:ss", new Date(Long.parseLong(intent.getStringExtra("rest_system_time")))).toString());
             }
         };
     }
@@ -64,24 +67,27 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
 
     @Override
     public void registerNotification() {
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(this.broadcastReceiver, new IntentFilter("rest_system"));
+        LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).registerReceiver(this.broadcastReceiver, new IntentFilter("rest_system_time"));
     }
 
     @Override
     public void DataBind() {
-        this.eventList = new ArrayList<String>();
+        this.eventMap = new HashMap<String, String>();
+        this.eventMap.put("/rest/system/time", "rest_system_time");
 
         TimerTask systemTimerTask = new TimerTask() {
             @Override
             public void run() {
-                getRestResponse("/rest/system", null, "rest_system");
+                for (Map.Entry<String, String> entry : eventMap.entrySet()) {
+                    getRestResponse(entry.getKey(), null, entry.getValue());
+                }
             }
         };
 
         HttpsTrustHelper.allowAllSSL();
 
         this.timer = new Timer();
-        timer.scheduleAtFixedRate(systemTimerTask, 0, 3000);
+        timer.scheduleAtFixedRate(systemTimerTask, 0, 10000);
     }
 
     public void getRestResponse(String restName, String[] parms, final String broadcastName) {
@@ -94,7 +100,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
             public void onResponse(String response) {
                 if (broadcastName != null && !broadcastName.isEmpty()) {
                     Intent intent = new Intent();
-                    intent.setAction("rest_system");
+                    intent.setAction("rest_system_time");
                     intent.putExtra(broadcastName, response);
 
                     LocalBroadcastManager.getInstance(getActivity().getApplicationContext()).sendBroadcast(intent);
@@ -103,7 +109,8 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                timer.cancel();
+                titleTextView.setText(error.getMessage());
             }
         });
 
