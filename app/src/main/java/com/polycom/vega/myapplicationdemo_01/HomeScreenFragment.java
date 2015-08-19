@@ -60,20 +60,22 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
 
         try {
             JSONObject json = new JSONObject("{\"address\":\"" + fragment_homescreen_contactEditText.getText().toString() + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, new Response.Listener<JSONObject>() {
+            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     Log.d("jsonObjectResponse: ", response.toString());
                 }
-            }, new Response.ErrorListener() {
+            };
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d("error", "LogResponse-------- " + error);
 
                     Toast.makeText(getActivity().getApplicationContext(), error.networkResponse.statusCode, Toast.LENGTH_SHORT).show();
                 }
-            });
+            };
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
 
             Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
         } catch (JSONException e) {
