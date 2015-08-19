@@ -69,9 +69,7 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("error", "LogResponse-------- " + error);
-
-                    Toast.makeText(getActivity().getApplicationContext(), error.networkResponse.statusCode, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             };
 
