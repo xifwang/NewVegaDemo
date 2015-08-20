@@ -5,17 +5,27 @@
     android:orientation="vertical"
     tools:context="com.polycom.vega.myapplicationdemo_01.HomeScreenFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Call to:"
+        android:id="@+id/textView"
+        android:layout_marginEnd="10dp"
+        android:layout_above="@+id/fragment_homescreen_placeACallButton"
+        android:layout_toStartOf="@+id/fragment_homescreen_contactEditText" />
+
     <EditText
         android:id="@+id/fragment_homescreen_contactEditText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:inputType="number"
         android:singleLine="true"
         android:text="172.21.97.153"
+        android:layout_marginTop="39dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp" />
+        android:layout_alignStart="@+id/fragment_homescreen_placeACallButton" />
 
     <Button
         android:id="@+id/fragment_homescreen_placeACallButton"
