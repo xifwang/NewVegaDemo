@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -23,7 +22,6 @@ import com.polycom.vega.rest.System;
 public class PairActivity extends AppCompatActivity implements IActivity {
     private EditText urlTextEdit = null;
     private Button pairButton = null;
-    private TextView errorMessageTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +34,6 @@ public class PairActivity extends AppCompatActivity implements IActivity {
 
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
-            errorMessageTextView.setText("");
-
             if (urlTextEdit.getText().toString() == "") {
                 return;
             }
@@ -113,7 +109,6 @@ public class PairActivity extends AppCompatActivity implements IActivity {
     public void initComponent() {
         this.urlTextEdit = (EditText) findViewById(R.id.urlEditText);
         this.pairButton = (Button) findViewById(R.id.pairButton);
-        this.errorMessageTextView = (TextView) findViewById(R.id.errorMessageTextView);
     }
 
     @Override

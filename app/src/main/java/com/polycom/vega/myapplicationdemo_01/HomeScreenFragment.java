@@ -1,8 +1,10 @@
 package com.polycom.vega.myapplicationdemo_01;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,7 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -28,16 +30,30 @@ import org.json.JSONObject;
  * A placeholder fragment containing a simple view.
  */
 public class HomeScreenFragment extends Fragment implements IActivity, IDataBind {
-    private LinearLayout view;
+    private RelativeLayout view;
     private EditText fragment_homescreen_contactEditText;
     private Button placeACallButton;
+    private boolean inACall;
+    private int conferenceIndex;
+
+    public boolean isInACall() {
+        return inACall;
+    }
+
+    public void setInACall(boolean inACall) {
+        this.inACall = inACall;
+
+        if (placeACallButton != null) {
+            placeACallButton.setText(inACall ? getString(R.string.button_endCall_text) : getString(R.string.button_placeACall_text));
+        }
+    }
 
     public HomeScreenFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.view = (LinearLayout) inflater.inflate(R.layout.fragment_homescreen, container, false);
+        this.view = (RelativeLayout) inflater.inflate(R.layout.fragment_homescreen, container, false);
 
         this.initComponent();
         this.initComponentState();
@@ -45,25 +61,80 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
         this.registerNotification();
         this.DataBind();
 
+        getActivity().setTitle("Connected with " + Constants.getServerUrl());
+
         return this.view;
     }
 
     private View.OnClickListener onPlaceACallClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            placeACall();
+            if (!inACall) {
+                placeACall();
+            } else {
+                endCall();
+            }
         }
     };
 
     private void placeACall() {
         String url = Constants.getServerUrl() + "/rest/conferences?_dc=1439978043968";
+        final String destinationIp = fragment_homescreen_contactEditText.getText().toString();
+        final ProgressDialog dialog = new ProgressDialog(view.getContext());
+        dialog.setMessage(getString(R.string.message_placeACall));
 
         try {
-            JSONObject json = new JSONObject("{\"address\":\"" + fragment_homescreen_contactEditText.getText().toString() + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
+            dialog.show();
+
+            JSONObject json = new JSONObject("{\"address\":\"" + destinationIp + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
             Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    Log.d("jsonObjectResponse: ", response.toString());
+                    dialog.dismiss();
+                }
+            };
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    dialog.dismiss();
+                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    // TODO: Need to improve.
+                    conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                    alertDialogBuilder.setMessage("In call with " + destinationIp);
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton(getString(R.string.button_endCall_text), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            endCall();
+
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialogBuilder.show();
+                }
+            };
+
+            JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
+
+            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
+
+            setInACall(true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void endCall() {
+        String url = Constants.getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
+
+        try {
+            JSONObject json = new JSONObject("{\"action\":\"hangup\"}");
+            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
                 }
             };
             Response.ErrorListener errorListener = new Response.ErrorListener() {
@@ -79,6 +150,8 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        setInACall(false);
     }
 
     @Override

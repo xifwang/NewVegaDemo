@@ -8,5 +8,7 @@
     <string name="navigationmenu_settings">Settings</string>
     <string name="navigationmenu_help">Help</string>
     <string name="title_activity_demo">DemoActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="button_placeACall_text">Place A Call</string>
+    <string name="button_endCall_text">End Call</string>
+    <string name="message_placeACall">Please wait for placing a call...</string>
 </resources>

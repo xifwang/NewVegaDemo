@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,13 +12,18 @@
         android:layout_gravity="center_horizontal"
         android:inputType="number"
         android:singleLine="true"
-        android:text="172.21.97.153" />
+        android:text="172.21.97.153"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="33dp" />
 
     <Button
         android:id="@+id/fragment_homescreen_placeACallButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
-        android:text="Place A Call" />
+        android:text="Place A Call"
+        android:layout_below="@+id/fragment_homescreen_contactEditText"
+        android:layout_centerHorizontal="true" />
 
-</LinearLayout>
+</RelativeLayout>
