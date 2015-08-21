@@ -11,4 +11,6 @@
     <string name="button_placeACall_text">Place A Call</string>
     <string name="button_endCall_text">End Call</string>
     <string name="message_placeACall">Please wait for placing a call...</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="copyright_declaration">© 2015 Polycom.</string>
 </resources>
