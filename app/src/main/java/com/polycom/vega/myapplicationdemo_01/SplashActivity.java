@@ -20,6 +20,8 @@ public class SplashActivity extends AppCompatActivity implements IActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        getSupportActionBar().hide();
+
         this.initComponent();
         this.initAnimation();
 
