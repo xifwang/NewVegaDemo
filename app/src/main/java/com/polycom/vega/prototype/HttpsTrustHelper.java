@@ -1,4 +1,4 @@
-package com.polycom.vega.myapplicationdemo_01;
+package com.polycom.vega.prototype;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;

@@ -1,4 +1,4 @@
-package com.polycom.vega.myapplicationdemo_01;
+package com.polycom.vega.prototype;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,9 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.polycom.vega.fundamental.Constants;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
+import com.polycom.vega.fundamental.VegaApplication;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -39,6 +39,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
     private TextView errorTextView;
     private BroadcastReceiver broadcastReceiver;
     private HashMap<String, String> eventMap;
+    private VegaApplication application;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,13 +48,15 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
         this.initComponent();
         this.initComponentState();
         this.registerNotification();
-        this.DataBind();
+        this.dataBind();
 
         return this.view;
     }
 
     @Override
     public void initComponent() {
+        this.application = (VegaApplication) getActivity().getApplicationContext();
+
         this.titleTextView = (TextView) this.view.findViewById(R.id.settingsflagment_titleTextView);
         this.errorTextView = (TextView) this.view.findViewById(R.id.settingfragment_errorTextView);
 
@@ -80,7 +83,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
     }
 
     @Override
-    public void DataBind() {
+    public void dataBind() {
         this.eventMap = new HashMap<String, String>();
         this.eventMap.put("/rest/system/time", "rest_system_time");
 
@@ -105,7 +108,7 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
             return;
         }
 
-        StringRequest request = new StringRequest(Constants.getServerUrl() + restName, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(application.getServerUrl() + restName, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (broadcastName != null && !broadcastName.isEmpty()) {

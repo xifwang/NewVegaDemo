@@ -1,4 +1,4 @@
-package com.polycom.vega.myapplicationdemo_01;
+package com.polycom.vega.prototype;
 
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -37,7 +37,7 @@ public class HomeScreen extends AppCompatActivity implements IActivity, IDataBin
         this.initComponent();
         this.initComponentState();
         this.registerNotification();
-        this.DataBind();
+        this.dataBind();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class HomeScreen extends AppCompatActivity implements IActivity, IDataBin
     }
 
     @Override
-    public void DataBind() {
+    public void dataBind() {
 
     }
 

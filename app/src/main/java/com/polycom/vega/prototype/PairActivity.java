@@ -1,4 +1,4 @@
-package com.polycom.vega.myapplicationdemo_01;
+package com.polycom.vega.prototype;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +15,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.polycom.vega.fundamental.Constants;
 import com.polycom.vega.fundamental.IActivity;
+import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.rest.System;
 
-public class PairActivity extends AppCompatActivity implements IActivity {
+public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
     private EditText urlTextEdit = null;
     private Button pairButton = null;
+    private VegaApplication application;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +61,9 @@ public class PairActivity extends AppCompatActivity implements IActivity {
             @Override
             public void onResponse(String response) {
 //                parseData(response);
-                Constants.setServerUrl(finalUrl);
+                application.setServerUrl(finalUrl);
 
-                Intent intent = new Intent(PairActivity.this, HomeScreen.class);
+                Intent intent = new Intent(PairActivity.this, MainActivity.class);
                 intent.putExtra("response", response);
 
                 startActivity(intent);
@@ -107,6 +108,7 @@ public class PairActivity extends AppCompatActivity implements IActivity {
 
     @Override
     public void initComponent() {
+        this.application = (VegaApplication) getApplicationContext();
         this.urlTextEdit = (EditText) findViewById(R.id.urlEditText);
         this.pairButton = (Button) findViewById(R.id.pairButton);
     }
@@ -126,5 +128,10 @@ public class PairActivity extends AppCompatActivity implements IActivity {
 
     @Override
     public void registerNotification() {
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable ex) {
+        ex.printStackTrace();
     }
 }

@@ -1,4 +1,4 @@
-package com.polycom.vega.myapplicationdemo_01;
+package com.polycom.vega.prototype;
 
 import android.content.Intent;
 import android.os.Bundle;

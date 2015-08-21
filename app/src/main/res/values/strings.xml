@@ -13,4 +13,13 @@
     <string name="message_placeACall">Please wait for placing a call...</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="copyright_declaration">© 2015 Polycom.</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="option_item_administration_title">Administration</string>
+    <string name="option_item_placeACall_title">Place A Call</string>
+    <string name="option_item_showContent_title">Show Content</string>
+    <string name="option_item_keypad_title">Keypad</string>
+    <string name="option_item_contacts_title">Contacts</string>
+    <string name="option_item_recentCalls_title">Recent Calls</string>
+    <string name="option_item_systemInformation_title">System Information</string>
+    <string name="option_item_userSettings_title">User Settings</string>
 </resources>

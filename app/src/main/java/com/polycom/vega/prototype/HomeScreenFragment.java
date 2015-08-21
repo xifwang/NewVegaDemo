@@ -1,4 +1,4 @@
-package com.polycom.vega.myapplicationdemo_01;
+package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,9 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.polycom.vega.fundamental.Constants;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
+import com.polycom.vega.fundamental.VegaApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +35,7 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
     private Button placeACallButton;
     private boolean inACall;
     private int conferenceIndex;
+    private VegaApplication application;
 
     public boolean isInACall() {
         return inACall;
@@ -59,9 +60,9 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
         this.initComponentState();
         this.initAnimation();
         this.registerNotification();
-        this.DataBind();
+        this.dataBind();
 
-        getActivity().setTitle("Connected with " + Constants.getServerUrl());
+        getActivity().setTitle("Connected with " + application.getServerUrl());
 
         return this.view;
     }
@@ -78,7 +79,7 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
     };
 
     private void placeACall() {
-        String url = Constants.getServerUrl() + "/rest/conferences?_dc=1439978043968";
+        String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
         final String destinationIp = fragment_homescreen_contactEditText.getText().toString();
         final ProgressDialog dialog = new ProgressDialog(view.getContext());
         dialog.setMessage(getString(R.string.message_placeACall));
@@ -128,7 +129,7 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
     }
 
     private void endCall() {
-        String url = Constants.getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
+        String url = application.getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
 
         try {
             JSONObject json = new JSONObject("{\"action\":\"hangup\"}");
@@ -158,6 +159,8 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
 
     @Override
     public void initComponent() {
+        this.application = (VegaApplication) getActivity().getApplicationContext();
+
         this.fragment_homescreen_contactEditText = (EditText) this.view.findViewById(R.id.fragment_homescreen_contactEditText);
 
         this.placeACallButton = (Button) this.view.findViewById(R.id.fragment_homescreen_placeACallButton);
@@ -182,7 +185,7 @@ public class HomeScreenFragment extends Fragment implements IActivity, IDataBind
     }
 
     @Override
-    public void DataBind() {
+    public void dataBind() {
         Bundle bundle = getArguments();
 
         if (bundle != null) {
