@@ -17,10 +17,9 @@
 
     <EditText
         android:id="@+id/fragment_homescreen_contactEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:inputType="number"
         android:singleLine="true"
         android:text="172.21.97.153"
         android:layout_marginTop="39dp"
@@ -29,7 +28,7 @@
 
     <Button
         android:id="@+id/fragment_homescreen_placeACallButton"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
         android:text="Place A Call"
