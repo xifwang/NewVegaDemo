@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
@@ -22,8 +21,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragment = (LinearLayout) inflater.inflate(R.layout.fragment_placeacall, container, false);
-
-        Toast.makeText(getActivity().getApplicationContext(), "Here!", Toast.LENGTH_SHORT).show();
 
         this.initComponent();
         this.dataBind();
