@@ -22,12 +22,15 @@ import com.polycom.vega.rest.System;
 public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
     private EditText urlTextEdit = null;
     private Button pairButton = null;
+    private Button demoButton = null;
     private VegaApplication application;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pair);
+
+        getSupportActionBar().hide();
 
         this.initComponent();
         this.initComponentState();
@@ -40,6 +43,16 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
             }
 
             pair();
+        }
+    };
+
+    private View.OnClickListener demoButtonClickListerner = new View.OnClickListener() {
+        public void onClick(View view) {
+            application.setServerUrl("https://172.21.97.190");
+
+            Intent intent = new Intent(PairActivity.this, MainActivity.class);
+
+            startActivity(intent);
         }
     };
 
@@ -111,15 +124,14 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         this.application = (VegaApplication) getApplicationContext();
         this.urlTextEdit = (EditText) findViewById(R.id.urlEditText);
         this.pairButton = (Button) findViewById(R.id.pairButton);
+        this.demoButton = (Button) findViewById(R.id.demoButton);
     }
 
     @Override
     public void initComponentState() {
-        pairButton.setFocusable(true);
-        pairButton.setFocusableInTouchMode(true);
-        pairButton.requestFocus();
-        pairButton.requestFocusFromTouch();
         pairButton.setOnClickListener(pairButtonClickListerner);
+
+        demoButton.setOnClickListener(demoButtonClickListerner);
     }
 
     @Override
