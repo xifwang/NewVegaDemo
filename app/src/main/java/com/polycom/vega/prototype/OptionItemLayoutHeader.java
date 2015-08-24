@@ -38,7 +38,7 @@ public class OptionItemLayoutHeader extends Fragment implements IActivity, IData
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        header = (LinearLayout) inflater.inflate(R.layout.header_option_item_layout, container,
+        header = (LinearLayout) inflater.inflate(R.layout.header_option_fragment, container,
                 false);
 
         return header;

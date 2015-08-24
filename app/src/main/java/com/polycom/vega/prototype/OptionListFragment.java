@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.RelativeLayout;
 
 import com.polycom.vega.fundamental.IActivity;
@@ -26,7 +26,7 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
     private Context context;
     private ArrayList<OptionObject> optionList;
     private OptionAdapter optionAdapter;
-    private ListView optionListView;
+    private GridView optionListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,10 +65,12 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
             optionList.add(new OptionObject(R.drawable.icon_recentcalls, getString(R.string.option_item_recentCalls_title), 0));
             optionList.add(new OptionObject(R.drawable.icon_systeminformation, getString(R.string.option_item_systemInformation_title), 0));
             optionList.add(new OptionObject(R.drawable.icon_usersettings, getString(R.string.option_item_userSettings_title), 0));
+            optionList.add(new OptionObject(R.drawable.icon_administration, getString(R.string.option_item_administration_title), 0));
 
             optionAdapter = new OptionAdapter(getView().getContext(), optionList);
 
-            optionListView = (ListView) getView().findViewById(R.id.fragment_optionList_optionListView);
+            optionListView = (GridView) getView().findViewById(R.id
+                    .fragment_optionList_optionListView);
             optionListView.setAdapter(optionAdapter);
             optionListView.setOnItemClickListener(this);
         } catch (Exception ex) {
