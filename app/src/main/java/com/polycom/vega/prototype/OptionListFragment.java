@@ -25,7 +25,7 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
     private RelativeLayout fragment;
     private Context context;
     private ArrayList<OptionObject> optionList;
-    private OptionAdapter optionListAdapter;
+    private OptionAdapter optionAdapter;
     private ListView optionListView;
 
     @Override
@@ -66,10 +66,10 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
             optionList.add(new OptionObject(R.drawable.icon_systeminformation, getString(R.string.option_item_systemInformation_title), 0));
             optionList.add(new OptionObject(R.drawable.icon_usersettings, getString(R.string.option_item_userSettings_title), 0));
 
-            optionListAdapter = new OptionAdapter(getView().getContext(), optionList);
+            optionAdapter = new OptionAdapter(getView().getContext(), optionList);
 
             optionListView = (ListView) getView().findViewById(R.id.fragment_optionList_optionListView);
-            optionListView.setAdapter(optionListAdapter);
+            optionListView.setAdapter(optionAdapter);
             optionListView.setOnItemClickListener(this);
         } catch (Exception ex) {
             ex.printStackTrace();

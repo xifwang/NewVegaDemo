@@ -21,7 +21,7 @@ public class VegaApplication extends Application {
     }
 
     public void setServerUrl(String serverUrl) {
-        serverUrl = serverUrl;
+        this.serverUrl = serverUrl;
     }
 
     public SystemObject getCurrentSystemInfo() {
@@ -29,6 +29,6 @@ public class VegaApplication extends Application {
     }
 
     public void setCurrentSystemInfo(SystemObject currentSystemInfo) {
-        currentSystemInfo = currentSystemInfo;
+        this.currentSystemInfo = currentSystemInfo;
     }
 }

@@ -9,7 +9,7 @@
     <!--android:name="com.polycom.vega.myapplicationdemo_01.HomeScreenFragment"-->
     <!--android:layout_width="fill_parent"-->
     <!--android:layout_height="fill_parent"-->
-    <!--tools:layout="@layout/fragment_homescreen" />-->
+    <!--tools:layout="@layout/fragment_placeacall" />-->
     <LinearLayout
         android:id="@+id/main_fragment"
         android:layout_width="match_parent"

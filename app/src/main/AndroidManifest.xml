@@ -16,10 +16,6 @@
             android:name="com.polycom.vega.prototype.PairActivity"
             android:label="@string/app_name"/>
         <activity
-            android:name="com.polycom.vega.prototype.HomeScreen"
-            android:label="@string/title_activity_home_screen"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity
             android:name="com.polycom.vega.prototype.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/SplashTheme">
