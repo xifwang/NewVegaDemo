@@ -56,7 +56,7 @@ public class OptionItemLayoutHeader extends Fragment implements IActivity, IData
     @Override
     public void initComponent() {
         backImageView = (ImageView) header.findViewById(R.id
-                .header_option_item_layout_back_icon_imageView_icon_imageButton);
+                .header_option_item_layout_back_icon_imageButton);
         titleTextView = (TextView) header.findViewById(R.id
                 .header_option_item_layout_options_titleTextView);
         optionsImageView = (ImageView) header.findViewById(R.id

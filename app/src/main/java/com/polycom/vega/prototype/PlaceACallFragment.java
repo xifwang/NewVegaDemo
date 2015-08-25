@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +26,15 @@ import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.MenuParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xwcheng on 8/21/2015.
@@ -168,7 +173,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
                 .setText(getString(R.string.option_item_placeACall_title));
 
         ((ImageButton) header.findViewById(R.id
-                .header_option_item_layout_back_icon_imageView_icon_imageButton))
+                .header_option_item_layout_back_icon_imageButton))
                 .setOnClickListener(backHeaderButton_OnClickListener);
 
         ((ImageButton) header.findViewById(R.id.header_option_item_layout_options_icon_imageButton))
@@ -182,11 +187,27 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         placeACallButton = (BootstrapButton) fragment.findViewById(R.id
                 .fragment_placeacall_placeACallButton);
         placeACallButton.setOnClickListener(onPlaceACallClickListener);
-        placeACallButton.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+
+        ImageButton optionMenuButton = (ImageButton) header.findViewById(R.id.header_option_item_layout_options_icon_imageButton);
+        optionMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                menu.add("hellow");
-                menu.add("world");
+            public void onClick(View v) {
+                MenuObject close = new MenuObject();
+                close.setResource(R.drawable.icon_administration);
+
+                MenuObject send = new MenuObject("Send message");
+                send.setResource(R.drawable.icon_contacts);
+
+                List<MenuObject> menuObjects = new ArrayList<>();
+                menuObjects.add(close);
+                menuObjects.add(send);
+
+                MenuParams menuParams = new MenuParams();
+                menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.abc_action_bar_stacked_max_height));
+                menuParams.setMenuObjects(menuObjects);
+                menuParams.setClosableOutside(true);
+                ContextMenuDialogFragment menuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
+                menuDialogFragment.show(getFragmentManager(), "ContextMenuDialogFragment");
             }
         });
     }
