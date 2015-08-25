@@ -26,4 +26,5 @@ dependencies {
     compile 'com.alibaba:fastjson:1.2.6'
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.beardedhen:androidbootstrap:+'
+    compile 'com.yalantis:contextmenu:1.0.4'
 }
