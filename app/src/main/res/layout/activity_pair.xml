@@ -1,13 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:padding="16dp"
-                tools:context=".MainActivity">
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:padding="16dp"
+    tools:context=".MainActivity">
 
-    <EditText
+    <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/urlEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,22 +18,30 @@
         android:width="400dp"
         android:inputType="number"
         android:singleLine="true"
-        android:text="172.21.97.190"/>
+        android:text="172.21.97.190" />
 
-    <Button
-        android:id="@+id/pairButton"
-        android:layout_width="120dp"
-        android:layout_height="80dp"
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/activity_pair_pairButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/urlEditText"
         android:layout_centerHorizontal="true"
-        android:text="Pair"/>
+        android:layout_marginTop="10dp"
+        android:text="Pair"
+        bootstrap:bb_icon_left="fa-compress"
+        bootstrap:bb_roundedCorners="true"
+        bootstrap:bb_type="primary" />
 
-    <Button
-        android:id="@+id/demoButton"
-        android:layout_width="120dp"
-        android:layout_height="80dp"
-        android:layout_below="@+id/pairButton"
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/activity_pair_demoButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_pair_pairButton"
         android:layout_centerHorizontal="true"
-        android:text="Demo"/>
+        android:layout_marginTop="10dp"
+        android:text="Demo"
+        bootstrap:bb_icon_left="fa-video-camera"
+        bootstrap:bb_roundedCorners="true"
+        bootstrap:bb_type="warning" />
 
 </RelativeLayout>

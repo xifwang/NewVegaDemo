@@ -7,8 +7,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -16,14 +14,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.rest.System;
 
 public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
-    private EditText urlTextEdit = null;
-    private Button pairButton = null;
-    private Button demoButton = null;
+    private BootstrapEditText urlTextEdit = null;
+    private BootstrapButton pairButton = null;
+    private BootstrapButton demoButton = null;
     private VegaApplication application;
 
     @Override
@@ -121,9 +121,9 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
     @Override
     public void initComponent() {
         this.application = (VegaApplication) getApplicationContext();
-        this.urlTextEdit = (EditText) findViewById(R.id.urlEditText);
-        this.pairButton = (Button) findViewById(R.id.pairButton);
-        this.demoButton = (Button) findViewById(R.id.demoButton);
+        this.urlTextEdit = (BootstrapEditText) findViewById(R.id.urlEditText);
+        this.pairButton = (BootstrapButton) findViewById(R.id.activity_pair_pairButton);
+        this.demoButton = (BootstrapButton) findViewById(R.id.activity_pair_demoButton);
     }
 
     @Override

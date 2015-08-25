@@ -8,13 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.ScaleAnimation;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,6 +22,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
@@ -38,8 +37,8 @@ import org.json.JSONObject;
 public class PlaceACallFragment extends Fragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind {
     private RelativeLayout fragment;
     private LinearLayout header;
-    private EditText fragment_placeacall_contactEditText;
-    private Button placeACallButton;
+    private BootstrapEditText fragment_placeacall_contactEditText;
+    private BootstrapButton placeACallButton;
     private boolean inACall;
     private int conferenceIndex;
     private VegaApplication application;
@@ -177,12 +176,19 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
 
         application = (VegaApplication) getActivity().getApplicationContext();
 
-        fragment_placeacall_contactEditText = (EditText) fragment.findViewById(R.id
+        fragment_placeacall_contactEditText = (BootstrapEditText) fragment.findViewById(R.id
                 .fragment_placeacall_contactEditText);
 
-        placeACallButton = (Button) fragment.findViewById(R.id
+        placeACallButton = (BootstrapButton) fragment.findViewById(R.id
                 .fragment_placeacall_placeACallButton);
         placeACallButton.setOnClickListener(onPlaceACallClickListener);
+        placeACallButton.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add("hellow");
+                menu.add("world");
+            }
+        });
     }
 
     private View.OnClickListener backHeaderButton_OnClickListener = new View.OnClickListener() {
@@ -195,7 +201,8 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
     private View.OnClickListener optionsHeaderButton_OnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            fragment.showContextMenu();
+//            fragment.showContextMenu();
+
         }
     };
 
@@ -227,17 +234,17 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         super.registerForContextMenu(fragment);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add("Clear");
-
-        super.onCreateContextMenu(menu, fragment, menuInfo);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        return super.onContextItemSelected(item);
-    }
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+//        menu.add("Clear");
+//
+//        super.onCreateContextMenu(menu, fragment, menuInfo);
+//    }
+//
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        return super.onContextItemSelected(item);
+//    }
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {

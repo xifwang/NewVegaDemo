@@ -1,9 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:context="com.polycom.vega.prototype.HomeScreenFragment">
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.polycom.vega.prototype.HomeScreenFragment">
 
     <include
         android:id="@+id/header_placeacall_fragment"
@@ -11,31 +12,42 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:text="Call to:"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_alignBottom="@+id/fragment_placeacall_contactEditText"
-        android:layout_toStartOf="@+id/fragment_placeacall_contactEditText"/>
+        android:layout_below="@+id/header_placeacall_fragment"
+        android:layout_alignEnd="@+id/fragment_placeacall_contactEditText"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="10dp" />
 
-    <EditText
+    <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/fragment_placeacall_contactEditText"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:singleLine="true"
         android:text="172.21.97.153"
-        android:layout_above="@+id/fragment_placeacall_placeACallButton"
-        android:layout_alignStart="@+id/fragment_placeacall_placeACallButton"
-        android:layout_marginBottom="42dp"/>
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true" />
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/fragment_placeacall_placeACallButton"
-        android:layout_width="240dp"
-        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        bootstrap:bb_roundedCorners="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
         android:text="Place A Call"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        bootstrap:bb_icon_left="fa-phone"
+        bootstrap:bb_type="primary" />
 
 </RelativeLayout>
