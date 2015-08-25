@@ -15,39 +15,39 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/fragment_placeacall_contactEditText"
+        android:layout_below="@+id/header_placeacall_fragment"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:text="Call to:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/header_placeacall_fragment"
-        android:layout_alignEnd="@+id/fragment_placeacall_contactEditText"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="10dp" />
+        android:text="Call to:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/fragment_placeacall_contactEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:singleLine="true"
-        android:text="172.21.97.153"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true" />
+        android:text="172.21.97.153" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/fragment_placeacall_placeACallButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/fragment_placeacall_contactEditText"
+        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        bootstrap:bb_roundedCorners="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:text="Place A Call"
         bootstrap:bb_icon_left="fa-phone"
+        bootstrap:bb_roundedCorners="true"
         bootstrap:bb_type="primary" />
 
 </RelativeLayout>
