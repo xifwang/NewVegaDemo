@@ -193,10 +193,10 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
             @Override
             public void onClick(View v) {
                 MenuObject close = new MenuObject();
-                close.setResource(R.drawable.icon_administration);
+                close.setResource(R.drawable.menu_icon_close);
 
-                MenuObject send = new MenuObject("Send message");
-                send.setResource(R.drawable.icon_contacts);
+                MenuObject send = new MenuObject("Test");
+                send.setResource(R.drawable.menu_icon_test);
 
                 List<MenuObject> menuObjects = new ArrayList<>();
                 menuObjects.add(close);
