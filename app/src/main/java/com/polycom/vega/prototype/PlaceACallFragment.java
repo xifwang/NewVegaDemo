@@ -207,7 +207,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
     @Override
     public void initAnimation() {
         ScaleAnimation scaleAnimation = new ScaleAnimation(0, 1, 0, 1);
-        scaleAnimation.setDuration(1000);
+        scaleAnimation.setDuration(500);
         LayoutAnimationController animationController = new LayoutAnimationController(scaleAnimation, 0.1f);
 
         fragment.setLayoutAnimation(animationController);

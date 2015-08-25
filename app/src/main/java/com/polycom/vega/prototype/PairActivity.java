@@ -3,6 +3,7 @@ package com.polycom.vega.prototype;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +39,7 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
-            if (urlTextEdit.getText().toString() == "") {
+            if (TextUtils.isEmpty(urlTextEdit.getText().toString())) {
                 return;
             }
 
@@ -50,16 +51,14 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         public void onClick(View view) {
             application.setServerUrl("https://172.21.97.190");
 
-            Intent intent = new Intent(PairActivity.this, MainActivity.class);
-
-            startActivity(intent);
+            startActivity(new Intent(PairActivity.this, MainActivity.class));
         }
     };
 
     private void pair() {
         String url = urlTextEdit.getText().toString();
 
-        if (url.equals("")) {
+        if (TextUtils.isEmpty(url)) {
             return;
         }
 
