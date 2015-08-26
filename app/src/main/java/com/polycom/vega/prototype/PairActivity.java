@@ -1,5 +1,7 @@
 package com.polycom.vega.prototype;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -49,9 +51,19 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
     private View.OnClickListener demoButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
-            application.setServerUrl("https://172.21.97.190");
+            AlertDialog.Builder dialog = new AlertDialog.Builder(PairActivity.this);
+            dialog.setTitle("Demo");
+            dialog.setMessage("This is only for demonstration, functions require connection may not work.");
+            dialog.setCancelable(false);
+            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    application.setServerUrl("https://172.21.97.190");
 
-            startActivity(new Intent(PairActivity.this, MainActivity.class));
+                    startActivity(new Intent(PairActivity.this, MainActivity.class));
+                }
+            });
+            dialog.show();
         }
     };
 
