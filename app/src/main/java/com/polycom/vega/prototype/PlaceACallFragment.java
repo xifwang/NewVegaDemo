@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.ScaleAnimation;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -47,6 +48,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
     private boolean inACall;
     private int conferenceIndex;
     private VegaApplication application;
+    private ImageButton recentCallsImageButton;
 
     public boolean isInACall() {
         return inACall;
@@ -210,7 +212,33 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
                 menuDialogFragment.show(getFragmentManager(), "ContextMenuDialogFragment");
             }
         });
+
+        recentCallsImageButton = (ImageButton) fragment.findViewById(R.id.fragment_placeacall_recentCallsImageButton);
+        recentCallsImageButton.setOnClickListener(recentCallsImageButton_OnClickListener);
     }
+
+    private View.OnClickListener recentCallsImageButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
+            builder.setIcon(R.drawable.icon_recent_calls);
+            builder.setTitle(getString(R.string.option_item_recentCalls_title));
+
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(fragment.getContext(), android.R.layout.simple_selectable_list_item);
+            arrayAdapter.add("172.21.97.153");
+            arrayAdapter.add("172.21.97.190");
+            arrayAdapter.add("172.21.97.157");
+
+            builder.setAdapter(arrayAdapter,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            fragment_placeacall_contactEditText.setText(arrayAdapter.getItem(which));
+                        }
+                    });
+            builder.show();
+        }
+    };
 
     private View.OnClickListener backHeaderButton_OnClickListener = new View.OnClickListener() {
         @Override
@@ -223,7 +251,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         @Override
         public void onClick(View view) {
 //            fragment.showContextMenu();
-
         }
     };
 

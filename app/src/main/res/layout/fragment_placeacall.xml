@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.polycom.vega.prototype.HomeScreenFragment">
+    tools:context="com.polycom.vega.prototype.PlaceACallFragment">
 
     <include
         android:id="@+id/header_placeacall_fragment"
@@ -32,7 +32,7 @@
         android:layout_below="@+id/textView"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="48dp"
         android:singleLine="true"
         android:text="172.21.97.153" />
 
@@ -49,5 +49,15 @@
         bootstrap:bb_icon_left="fa-phone"
         bootstrap:bb_roundedCorners="true"
         bootstrap:bb_type="primary" />
+
+    <ImageButton
+        android:id="@+id/fragment_placeacall_recentCallsImageButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignTop="@+id/fragment_placeacall_contactEditText"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@+id/textView"
+        android:background="@drawable/icon_recent_calls" />
 
 </RelativeLayout>
