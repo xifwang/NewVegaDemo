@@ -20,7 +20,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaApplication;
-import com.polycom.vega.rest.System;
+import com.polycom.vega.restobject.SystemObject;
 
 public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
     private BootstrapEditText urlTextEdit = null;
@@ -103,7 +103,7 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
     }
 
     private void parseData(String response) {
-        System systemInfo = JSON.parseObject(response, System.class);
+        SystemObject systemInfo = JSON.parseObject(response, SystemObject.class);
 
 //        resultTextView.setText(response);
     }

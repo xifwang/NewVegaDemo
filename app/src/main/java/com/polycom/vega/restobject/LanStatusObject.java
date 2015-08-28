@@ -1,9 +1,9 @@
-package com.polycom.vega.rest;
+package com.polycom.vega.restobject;
 
 /**
  * Created by xwcheng on 8/13/2015.
  */
-public class LanStatus {
+public class LanStatusObject {
     private String duplex;
     private String state;
     private String speedMbps;

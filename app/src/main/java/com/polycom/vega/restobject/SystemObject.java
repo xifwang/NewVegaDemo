@@ -1,13 +1,13 @@
-package com.polycom.vega.rest;
+package com.polycom.vega.restobject;
 
 /**
  * Created by xwcheng on 8/13/2015.
  */
-public class System {
+public class SystemObject {
     private String build;
     private String buildType;
     private String hardwareVersion;
-    private LanStatus lanStatus;
+    private LanStatusObject lanStatus;
     private String model;
     private String rcBatteryCondition;
     private String timeServerState;
@@ -44,11 +44,11 @@ public class System {
         this.hardwareVersion = hardwareVersion;
     }
 
-    public LanStatus getLanStatus() {
+    public LanStatusObject getLanStatus() {
         return lanStatus;
     }
 
-    public void setLanStatus(LanStatus lanStatus) {
+    public void setLanStatus(LanStatusObject lanStatus) {
         this.lanStatus = lanStatus;
     }
 

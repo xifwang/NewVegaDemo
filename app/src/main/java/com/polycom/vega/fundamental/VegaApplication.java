@@ -2,7 +2,7 @@ package com.polycom.vega.fundamental;
 
 import android.app.Application;
 
-import com.polycom.vega.system.SystemObject;
+import com.polycom.vega.restobject.SystemObject;
 
 /**
  * Created by xwcheng on 8/21/2015.
