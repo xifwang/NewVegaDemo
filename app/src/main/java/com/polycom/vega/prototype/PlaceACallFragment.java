@@ -221,7 +221,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         @Override
         public void onClick(View view) {
             AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
-            builder.setIcon(R.drawable.icon_recent_calls);
+            builder.setIcon(R.drawable.icon_recentcalls);
             builder.setTitle(getString(R.string.option_item_recentCalls_title));
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(fragment.getContext(), android.R.layout.simple_selectable_list_item);
