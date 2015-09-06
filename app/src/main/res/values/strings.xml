@@ -22,4 +22,5 @@
     <string name="option_item_recentCalls_title">Recent Calls</string>
     <string name="option_item_systemInformation_title">System Information</string>
     <string name="option_item_userSettings_title">User Settings</string>
+    <string name="option_item_favorite_title">Favorite</string>
 </resources>

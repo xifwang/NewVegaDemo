@@ -65,7 +65,7 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
             optionList.add(new OptionObject(R.drawable.icon_recentcalls, getString(R.string.option_item_recentCalls_title), 0));
             optionList.add(new OptionObject(R.drawable.icon_systeminformation, getString(R.string.option_item_systemInformation_title), 0));
             optionList.add(new OptionObject(R.drawable.icon_usersettings, getString(R.string.option_item_userSettings_title), 0));
-            optionList.add(new OptionObject(R.drawable.icon_administration, getString(R.string.option_item_administration_title), 0));
+            optionList.add(new OptionObject(R.drawable.icon_favorite, getString(R.string.option_item_favorite_title), 0));
 
             optionAdapter = new OptionAdapter(getView().getContext(), optionList);
 
