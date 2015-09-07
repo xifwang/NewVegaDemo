@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:baselineAligned="false"
+    android:gravity="fill_vertical|center_horizontal"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/bottombar_placeacall_fragment_favoriteImageButton"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/icon_favorite"
+        android:scaleType="centerCrop"
+        android:background="#00ffffff" />
+
+    <ImageButton
+        android:id="@+id/bottombar_placeacall_fragment_historyImageButton"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="#00ffffff"
+        android:src="@drawable/icon_recentcalls"
+        android:scaleType="centerCrop" />
+
+    <ImageButton
+        android:id="@+id/bottombar_placeacall_fragment_contactImageButton"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="#00ffffff"
+        android:src="@drawable/icon_contacts"
+        android:scaleType="centerCrop" />
+
+    <ImageButton
+        android:id="@+id/bottombar_placeacall_fragment_keypadImageButton"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="#00FFFFFF"
+        android:src="@drawable/icon_keypad"
+        android:scaleType="centerCrop" />
+</LinearLayout>

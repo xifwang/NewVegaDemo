@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_placeacall_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,53 +10,11 @@
         android:id="@+id/header_placeacall_fragment"
         layout="@layout/header_option_fragment"></include>
 
-    <TextView
-        android:id="@+id/textView"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/fragment_placeacall_contactEditText"
-        android:layout_below="@+id/header_placeacall_fragment"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="40dp"
-        android:text="Call to:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <com.beardedhen.androidbootstrap.BootstrapEditText
-        android:id="@+id/fragment_placeacall_contactEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="48dp"
-        android:singleLine="true" />
-
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/fragment_placeacall_placeACallButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_placeacall_contactEditText"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="10dp"
-        android:text="Place A Call"
-        bootstrap:bb_icon_left="fa-phone"
-        bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_type="primary" />
-
-    <ImageButton
-        android:id="@+id/fragment_placeacall_recentCallsImageButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignTop="@+id/fragment_placeacall_contactEditText"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_toEndOf="@+id/textView"
-        android:background="@drawable/icon_recentcalls"/>
-
+    <include
+        android:id="@+id/bottombar_placeacall_fragment"
+        layout="@layout/bottombar_placeacall_fragment"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="0dp"></include>
 </RelativeLayout>
