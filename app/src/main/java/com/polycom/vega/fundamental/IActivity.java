@@ -6,7 +6,6 @@ package com.polycom.vega.fundamental;
 public interface IActivity {
     void initComponent();
     void initComponentState();
-
     void initAnimation();
     void registerNotification();
 }
