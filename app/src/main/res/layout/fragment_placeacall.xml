@@ -10,11 +10,12 @@
         android:id="@+id/header_placeacall_fragment"
         layout="@layout/header_option_fragment"></include>
 
+
     <include
         android:id="@+id/bottombar_placeacall_fragment"
         layout="@layout/bottombar_placeacall_fragment"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="0dp"></include>
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"></include>
+
 </RelativeLayout>
