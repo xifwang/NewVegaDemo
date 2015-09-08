@@ -15,7 +15,7 @@
         android:id="@+id/bottombar_placeacall_fragment"
         layout="@layout/bottombar_placeacall_fragment"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"></include>
 
 </RelativeLayout>
