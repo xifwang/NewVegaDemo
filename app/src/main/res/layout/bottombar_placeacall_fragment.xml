@@ -3,8 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:baselineAligned="false"
-    android:gravity="fill_vertical|center_horizontal"
     android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/textView4"
+        android:layout_weight="1" />
 
     <ImageButton
         android:id="@+id/bottombar_placeacall_fragment_favoriteImageButton"
@@ -14,6 +20,13 @@
         android:scaleType="centerCrop"
         android:background="#00ffffff" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/textView"
+        android:layout_weight="1" />
+
     <ImageButton
         android:id="@+id/bottombar_placeacall_fragment_historyImageButton"
         android:layout_width="60dp"
@@ -21,6 +34,13 @@
         android:background="#00ffffff"
         android:src="@drawable/icon_recentcalls"
         android:scaleType="centerCrop" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/textView2"
+        android:layout_weight="1" />
 
     <ImageButton
         android:id="@+id/bottombar_placeacall_fragment_contactImageButton"
@@ -30,6 +50,13 @@
         android:src="@drawable/icon_contacts"
         android:scaleType="centerCrop" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/textView3"
+        android:layout_weight="1" />
+
     <ImageButton
         android:id="@+id/bottombar_placeacall_fragment_keypadImageButton"
         android:layout_width="60dp"
@@ -37,4 +64,11 @@
         android:background="#00FFFFFF"
         android:src="@drawable/icon_keypad"
         android:scaleType="centerCrop" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/textView5"
+        android:layout_weight="1" />
 </LinearLayout>

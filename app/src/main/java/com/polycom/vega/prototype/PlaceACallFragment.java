@@ -22,8 +22,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
@@ -43,12 +41,9 @@ import java.util.List;
 public class PlaceACallFragment extends Fragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind {
     private RelativeLayout fragment;
     private LinearLayout header;
-    private BootstrapEditText fragment_placeacall_contactEditText;
-    private BootstrapButton placeACallButton;
     private boolean inACall;
     private int conferenceIndex;
     private VegaApplication application;
-    private ImageButton recentCallsImageButton;
 
     public boolean isInACall() {
         return inACall;
@@ -56,10 +51,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
 
     public void setInACall(boolean inACall) {
         inACall = inACall;
-
-        if (placeACallButton != null) {
-            placeACallButton.setText(inACall ? getString(R.string.button_endCall_text) : getString(R.string.button_placeACall_text));
-        }
     }
 
     @Nullable
@@ -89,7 +80,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
 
     private void placeACall() {
         String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
-        final String destinationIp = fragment_placeacall_contactEditText.getText().toString();
+        final String destinationIp = "172.21.97.153";
         final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
         dialog.setMessage(getString(R.string.message_placeACall));
 
@@ -183,13 +174,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
 
         application = (VegaApplication) getActivity().getApplicationContext();
 
-        fragment_placeacall_contactEditText = (BootstrapEditText) fragment.findViewById(R.id
-                .fragment_placeacall_contactEditText);
-
-        placeACallButton = (BootstrapButton) fragment.findViewById(R.id
-                .fragment_placeacall_placeACallButton);
-        placeACallButton.setOnClickListener(onPlaceACallClickListener);
-
         ImageButton optionMenuButton = (ImageButton) header.findViewById(R.id.header_option_item_layout_options_icon_imageButton);
         optionMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,9 +196,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
                 menuDialogFragment.show(getFragmentManager(), "ContextMenuDialogFragment");
             }
         });
-
-        recentCallsImageButton = (ImageButton) fragment.findViewById(R.id.fragment_placeacall_recentCallsImageButton);
-        recentCallsImageButton.setOnClickListener(recentCallsImageButton_OnClickListener);
     }
 
     private View.OnClickListener recentCallsImageButton_OnClickListener = new View.OnClickListener() {
@@ -233,7 +214,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            fragment_placeacall_contactEditText.setText(arrayAdapter.getItem(which));
                         }
                     });
             builder.show();
