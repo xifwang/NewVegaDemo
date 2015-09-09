@@ -78,7 +78,11 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
             url = "https://" + url;
         }
 
-        HttpsTrustHelper.allowAllSSL();
+        try {
+            HttpsTrustHelper.allowAllSSL();
+        } catch (Exception ex) {
+            Toast.makeText(PairActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
         final String finalUrl = url;
         StringRequest request = new StringRequest(url + "/rest/system", new Response.Listener<String>() {

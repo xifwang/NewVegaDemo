@@ -43,6 +43,8 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
     private LinearLayout header;
     private boolean inACall;
     private int conferenceIndex;
+    private View headerBar;
+    private View bottomBar;
     private VegaApplication application;
 
     public boolean isInACall() {
@@ -196,6 +198,20 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
                 menuDialogFragment.show(getFragmentManager(), "ContextMenuDialogFragment");
             }
         });
+
+        headerBar = fragment.findViewById(R.id.header_placeacall_fragment);
+
+        bottomBar = fragment.findViewById(R.id.bottombar_placeacall_fragment);
+
+        ImageButton keypadImageButton = (ImageButton) bottomBar.findViewById(R.id.bottombar_placeacall_fragment_keypadImageButton);
+        keypadImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                headerBar.setVisibility(View.GONE);
+                getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
+            }
+        });
+        keypadImageButton.callOnClick();
     }
 
     private View.OnClickListener recentCallsImageButton_OnClickListener = new View.OnClickListener() {

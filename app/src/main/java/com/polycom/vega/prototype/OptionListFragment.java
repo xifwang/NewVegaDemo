@@ -29,8 +29,7 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
     private GridView optionListView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getActivity().getApplicationContext();
         fragment = (RelativeLayout) inflater.inflate(R.layout.fragment_optionlist, container, false);
 
@@ -55,27 +54,22 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
 
     @Override
     public void initComponent() {
-        try {
-            optionList = new ArrayList<OptionObject>();
-            optionList.add(new OptionObject(R.drawable.icon_administration, getString(R.string.option_item_administration_title), 0));
-            optionList.add(new OptionObject(R.drawable.icon_placeacall, getString(R.string.option_item_placeACall_title), R.layout.fragment_placeacall));
-            optionList.add(new OptionObject(R.drawable.icon_showcontent, getString(R.string.option_item_showContent_title), 0));
-            optionList.add(new OptionObject(R.drawable.icon_keypad, getString(R.string.option_item_keypad_title), 0));
-            optionList.add(new OptionObject(R.drawable.icon_contacts, getString(R.string.option_item_contacts_title), 0));
-            optionList.add(new OptionObject(R.drawable.icon_recentcalls, getString(R.string.option_item_recentCalls_title), 0));
-            optionList.add(new OptionObject(R.drawable.icon_systeminformation, getString(R.string.option_item_systemInformation_title), 0));
-            optionList.add(new OptionObject(R.drawable.icon_usersettings, getString(R.string.option_item_userSettings_title), 0));
-            optionList.add(new OptionObject(R.drawable.icon_favorite, getString(R.string.option_item_favorite_title), 0));
+        optionList = new ArrayList<OptionObject>();
+        optionList.add(new OptionObject(R.drawable.icon_administration, getString(R.string.option_item_administration_title), 0));
+        optionList.add(new OptionObject(R.drawable.icon_placeacall, getString(R.string.option_item_placeACall_title), R.layout.fragment_placeacall));
+        optionList.add(new OptionObject(R.drawable.icon_showcontent, getString(R.string.option_item_showContent_title), 0));
+        optionList.add(new OptionObject(R.drawable.icon_keypad, getString(R.string.option_item_keypad_title), 0));
+        optionList.add(new OptionObject(R.drawable.icon_contacts, getString(R.string.option_item_contacts_title), 0));
+        optionList.add(new OptionObject(R.drawable.icon_recentcalls, getString(R.string.option_item_recentCalls_title), 0));
+        optionList.add(new OptionObject(R.drawable.icon_systeminformation, getString(R.string.option_item_systemInformation_title), 0));
+        optionList.add(new OptionObject(R.drawable.icon_usersettings, getString(R.string.option_item_userSettings_title), 0));
+        optionList.add(new OptionObject(R.drawable.icon_favorite, getString(R.string.option_item_favorite_title), 0));
 
-            optionAdapter = new OptionAdapter(getView().getContext(), optionList);
+        optionAdapter = new OptionAdapter(context, optionList);
 
-            optionListView = (GridView) getView().findViewById(R.id
-                    .fragment_optionList_optionListView);
-            optionListView.setAdapter(optionAdapter);
-            optionListView.setOnItemClickListener(this);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        optionListView = (GridView) getView().findViewById(R.id.fragment_optionList_optionListView);
+        optionListView.setAdapter(optionAdapter);
+        optionListView.setOnItemClickListener(this);
     }
 
     @Override

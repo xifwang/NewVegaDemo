@@ -10,6 +10,11 @@
         android:id="@+id/header_placeacall_fragment"
         layout="@layout/header_option_fragment"></include>
 
+    <LinearLayout
+        android:id="@+id/fragment_placeacall_maincontainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></LinearLayout>
 
     <include
         android:id="@+id/bottombar_placeacall_fragment"
