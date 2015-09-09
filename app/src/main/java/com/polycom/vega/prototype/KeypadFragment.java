@@ -79,7 +79,7 @@ public class KeypadFragment extends Fragment implements IActivity, AdapterView.O
                 numberTextView.setText(numberTextView.getText() + "0");
                 break;
             case 11:
-                numberTextView.setText(numberTextView.getText() + "/");
+                numberTextView.setText(numberTextView.getText() + "#");
                 break;
             case 13:
 
