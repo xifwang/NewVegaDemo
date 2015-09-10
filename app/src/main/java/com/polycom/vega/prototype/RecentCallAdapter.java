@@ -29,6 +29,12 @@ public class RecentCallAdapter extends ArrayAdapter<String> {
 
         TextView textView = (TextView) convertView.findViewById(R.id.recentcalllist_item_textView);
         textView.setText(call);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 
         ImageButton imageButton = (ImageButton) convertView.findViewById(R.id.recentcalllist_item_imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
