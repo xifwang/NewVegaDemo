@@ -20,7 +20,8 @@ import java.util.ArrayList;
 /**
  * Created by xwcheng on 9/9/2015.
  */
-public class KeypadFragment extends Fragment implements IActivity, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
+public class KeypadFragment extends Fragment implements IActivity, AdapterView
+        .OnItemClickListener, Thread.UncaughtExceptionHandler {
 
     private LinearLayout fragment;
     private Context context;

@@ -14,6 +14,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
     private View headerBar;
     private View bottomBar;
     private VegaApplication application;
+    private RadioGroup bottomBarRadioGroup;
 
     public boolean isInACall() {
         return inACall;
@@ -58,13 +60,19 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragment = (RelativeLayout) inflater.inflate(R.layout.fragment_placeacall, container, false);
+        try {
+            fragment = (RelativeLayout) inflater.inflate(R.layout.fragment_placeacall, container, false);
+        } catch (Exception ex) {
+            Toast.makeText(getView().getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
         initComponent();
         initComponentState();
         initAnimation();
         registerNotification();
         dataBind();
+
+        getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
 
         return fragment;
     }
@@ -203,15 +211,17 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
 
         bottomBar = fragment.findViewById(R.id.bottombar_placeacall_fragment);
 
-        ImageButton keypadImageButton = (ImageButton) bottomBar.findViewById(R.id.bottombar_placeacall_fragment_keypadImageButton);
-        keypadImageButton.setOnClickListener(new View.OnClickListener() {
+        bottomBarRadioGroup = (RadioGroup) bottomBar.findViewById(R.id
+                .bootombar_placeacall_fragment_radiogroup);
+        bottomBarRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                headerBar.setVisibility(View.GONE);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.bottombar_placeacall_fragment_keypadRadioButton) {
+                    headerBar.setVisibility(View.GONE);
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
+                }
             }
         });
-        keypadImageButton.callOnClick();
     }
 
     private View.OnClickListener recentCallsImageButton_OnClickListener = new View.OnClickListener() {
