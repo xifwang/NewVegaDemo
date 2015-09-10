@@ -57,7 +57,7 @@ public class KeypadAdapter extends ArrayAdapter<String> {
                 imageView.setImageResource(R.drawable.icon_keypad_0);
                 break;
             case 11:
-                imageView.setImageResource(R.drawable.icon_keypad_slash);
+                imageView.setImageResource(R.drawable.icon_keypad_pound);
                 break;
             case 13:
                 imageView.setImageResource(R.drawable.icon_keypad_call);
