@@ -1,8 +1,5 @@
 package com.polycom.vega.prototype;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.ScaleAnimation;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -19,19 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,20 +31,10 @@ import java.util.List;
 public class PlaceACallFragment extends Fragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind {
     private RelativeLayout fragment;
     private LinearLayout header;
-    private boolean inACall;
-    private int conferenceIndex;
     private View headerBar;
     private View bottomBar;
     private VegaApplication application;
     private RadioGroup bottomBarRadioGroup;
-
-    public boolean isInACall() {
-        return inACall;
-    }
-
-    public void setInACall(boolean inACall) {
-        inACall = inACall;
-    }
 
     @Nullable
     @Override
@@ -76,97 +55,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
 
         return fragment;
-    }
-
-    private View.OnClickListener onPlaceACallClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (!inACall) {
-                placeACall();
-            } else {
-                endCall();
-            }
-        }
-    };
-
-    private void placeACall() {
-        String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
-        final String destinationIp = "172.21.97.153";
-        final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
-        dialog.setMessage(getString(R.string.message_placeACall));
-
-        try {
-            dialog.show();
-
-            JSONObject json = new JSONObject("{\"address\":\"" + destinationIp + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
-            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    dialog.dismiss();
-                }
-            };
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    dialog.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    // TODO: Need to improve.
-                    conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(fragment.getContext
-                            ());
-                    alertDialogBuilder.setMessage("In call with " + destinationIp);
-                    alertDialogBuilder.setCancelable(false);
-                    alertDialogBuilder.setPositiveButton(getString(R.string.button_endCall_text), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            endCall();
-
-                            dialog.dismiss();
-                        }
-                    });
-                    alertDialogBuilder.show();
-                }
-            };
-
-            JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
-
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
-
-            setInACall(true);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void endCall() {
-        String url = application.getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
-
-        try {
-            JSONObject json = new JSONObject("{\"action\":\"hangup\"}");
-            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                }
-            };
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-//                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), "Call has been ended.", Toast.LENGTH_SHORT).show();
-                }
-            };
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
-
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        setInACall(false);
     }
 
     @Override
@@ -225,27 +113,27 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         });
     }
 
-    private View.OnClickListener recentCallsImageButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
-            builder.setIcon(R.drawable.icon_recentcalls);
-            builder.setTitle(getString(R.string.option_item_recentCalls_title));
-
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(fragment.getContext(), android.R.layout.simple_selectable_list_item);
-            arrayAdapter.add("172.21.97.153");
-            arrayAdapter.add("172.21.97.190");
-            arrayAdapter.add("172.21.97.157");
-
-            builder.setAdapter(arrayAdapter,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-            builder.show();
-        }
-    };
+//    private View.OnClickListener recentCallsImageButton_OnClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
+//            builder.setIcon(R.drawable.icon_recentcalls);
+//            builder.setTitle(getString(R.string.option_item_recentCalls_title));
+//
+//            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(fragment.getContext(), android.R.layout.simple_selectable_list_item);
+//            arrayAdapter.add("172.21.97.153");
+//            arrayAdapter.add("172.21.97.190");
+//            arrayAdapter.add("172.21.97.157");
+//
+//            builder.setAdapter(arrayAdapter,
+//                    new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                        }
+//                    });
+//            builder.show();
+//        }
+//    };
 
     private View.OnClickListener backHeaderButton_OnClickListener = new View.OnClickListener() {
         @Override
