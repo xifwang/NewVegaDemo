@@ -72,6 +72,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         registerNotification();
         dataBind();
 
+        headerBar.setVisibility(View.GONE);
         getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
 
         return fragment;
