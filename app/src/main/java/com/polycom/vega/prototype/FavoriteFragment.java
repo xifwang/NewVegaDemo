@@ -4,25 +4,23 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.polycom.vega.fundamental.ContactObject;
 import com.polycom.vega.fundamental.IActivity;
+import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 
 import org.json.JSONException;
@@ -31,118 +29,33 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by xwcheng on 9/9/2015.
+ * Created by xwcheng on 9/11/2015.
  */
-public class KeypadFragment extends Fragment implements IActivity, AdapterView
-        .OnItemClickListener, Thread.UncaughtExceptionHandler {
-
-    private VegaApplication application;
-    private int conferenceIndex;
-    private LinearLayout fragment;
+public class FavoriteFragment extends Fragment implements IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler, IActivity {
+    private View fragment;
     private Context context;
-    private ArrayList<String> keyList;
-    private KeypadAdapter keypadAdapter;
-    private GridView keypadGridView;
-    TextView numberTextView;
+    private int conferenceIndex;
+    private GridView favoriteGridView;
+    private ArrayList<ContactObject> favorites;
+    private FavoriteAdapter favoriteAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragment = (LinearLayout) inflater.inflate(R.layout.fragment_keypad, container, false);
+        fragment = inflater.inflate(R.layout.fragment_favorite, container, false);
         context = fragment.getContext();
 
         initComponent();
         initComponentState();
         initAnimation();
+        dataBind();
 
         return fragment;
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, 0.5F);
-
-        switch (position) {
-            case 0:
-                numberTextView.setText(numberTextView.getText() + "1");
-                break;
-            case 1:
-                numberTextView.setText(numberTextView.getText() + "2");
-                break;
-            case 2:
-                numberTextView.setText(numberTextView.getText() + "3");
-                break;
-            case 3:
-                numberTextView.setText(numberTextView.getText() + "4");
-                break;
-            case 4:
-                numberTextView.setText(numberTextView.getText() + "5");
-                break;
-            case 5:
-                numberTextView.setText(numberTextView.getText() + "6");
-                break;
-            case 6:
-                numberTextView.setText(numberTextView.getText() + "7");
-                break;
-            case 7:
-                numberTextView.setText(numberTextView.getText() + "8");
-                break;
-            case 8:
-                numberTextView.setText(numberTextView.getText() + "9");
-                break;
-            case 9:
-                numberTextView.setText(numberTextView.getText() + ".");
-                break;
-            case 10:
-                numberTextView.setText(numberTextView.getText() + "0");
-                break;
-            case 11:
-                numberTextView.setText(numberTextView.getText() + "#");
-                break;
-            case 13:
-                placeACall();
-                break;
-            case 14:
-                String number = numberTextView.getText().toString();
-                if (!TextUtils.isEmpty(number)) {
-                    numberTextView.setText(number.substring(0, number.length() - 1));
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
     public void initComponent() {
-        application = (VegaApplication) getActivity().getApplicationContext();
-
-        numberTextView = (TextView) fragment.findViewById(R.id.fragment_keypad_numberTextView);
-
-        keyList = new ArrayList<String>();
-        keyList.add("1");
-        keyList.add("2");
-        keyList.add("3");
-        keyList.add("4");
-        keyList.add("5");
-        keyList.add("6");
-        keyList.add("7");
-        keyList.add("8");
-        keyList.add("9");
-        keyList.add("dot");
-        keyList.add("0");
-        keyList.add("slash");
-        keyList.add("");
-        keyList.add("call");
-        keyList.add("back");
-
-        keypadAdapter = new KeypadAdapter(context, keyList);
-
-        keypadGridView = (GridView) fragment.findViewById(R.id.fragment_keypad_keypadGridView);
-        keypadGridView.setAdapter(keypadAdapter);
-        keypadGridView.setOnItemClickListener(this);
+        favoriteGridView = (GridView) fragment.findViewById(R.id.fragment_favorite_favoriteGridView);
     }
 
     @Override
@@ -161,13 +74,29 @@ public class KeypadFragment extends Fragment implements IActivity, AdapterView
     }
 
     @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
+    public void dataBind() {
+        favorites = new ArrayList<ContactObject>();
+        favorites.add(new ContactObject("老孙", "172.21.97.151"));
+        favorites.add(new ContactObject("王诚", "172.21.97.215"));
 
+        favoriteAdapter = new FavoriteAdapter(context, favorites);
+
+        favoriteGridView.setAdapter(favoriteAdapter);
+        favoriteGridView.setOnItemClickListener(this);
     }
 
-    private void placeACall() {
-        String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
-        final String destinationIp = "172.21.97.215";
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        placeACall(favorites.get(position).getDestinationIp());
+    }
+
+    @Override
+    public void uncaughtException(Thread thread, Throwable ex) {
+        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void placeACall(final String destinationIp) {
+        String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences?_dc=1439978043968";
         final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
         dialog.setMessage(getString(R.string.message_placeACall));
 
@@ -215,7 +144,7 @@ public class KeypadFragment extends Fragment implements IActivity, AdapterView
     }
 
     private void endCall() {
-        String url = application.getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
+        String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
 
         try {
             JSONObject json = new JSONObject("{\"action\":\"hangup\"}");
