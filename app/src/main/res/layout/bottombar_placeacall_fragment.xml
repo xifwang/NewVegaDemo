@@ -76,7 +76,7 @@
         android:id="@+id/bootombar_placeacall_fragment_radiogroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/favorite_item_displayNameTextView"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 

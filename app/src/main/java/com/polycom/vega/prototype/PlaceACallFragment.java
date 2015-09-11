@@ -108,7 +108,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
                 headerBar.setVisibility(View.GONE);
 
                 if (checkedId == R.id.bottombar_placeacall_fragment_favoriteRadioButton) {
-
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new FavoriteFragment()).commit();
                 } else if (checkedId == R.id.bottombar_placeacall_fragment_recentCallsRadioButton) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new RecentCallFragment()).commit();
                 } else if (checkedId == R.id.bottombar_placeacall_fragment_contactsRadioButton) {
