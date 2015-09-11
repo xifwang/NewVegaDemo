@@ -105,8 +105,11 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         bottomBarRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.bottombar_placeacall_fragment_keypadRadioButton) {
-                    headerBar.setVisibility(View.GONE);
+                headerBar.setVisibility(View.GONE);
+
+                if (checkedId == R.id.bottombar_placeacall_fragment_recentCallsRadioButton) {
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new RecentCallFragment()).commit();
+                } else if (checkedId == R.id.bottombar_placeacall_fragment_keypadRadioButton) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
                 }
             }
