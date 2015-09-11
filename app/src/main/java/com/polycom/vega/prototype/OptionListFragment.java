@@ -58,12 +58,12 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
         optionList.add(new OptionObject(R.drawable.icon_administration, getString(R.string.option_item_administration_title), 0));
         optionList.add(new OptionObject(R.drawable.icon_placeacall, getString(R.string.option_item_placeACall_title), R.layout.fragment_placeacall));
         optionList.add(new OptionObject(R.drawable.icon_showcontent, getString(R.string.option_item_showContent_title), 0));
-        optionList.add(new OptionObject(R.drawable.icon_keypad, getString(R.string.option_item_keypad_title), 0));
-        optionList.add(new OptionObject(R.drawable.icon_contacts, getString(R.string.option_item_contacts_title), 0));
-        optionList.add(new OptionObject(R.drawable.icon_recentcalls, getString(R.string.option_item_recentCalls_title), 0));
+//        optionList.add(new OptionObject(R.drawable.icon_keypad, getString(R.string.option_item_keypad_title), 0));
+//        optionList.add(new OptionObject(R.drawable.icon_contacts, getString(R.string.option_item_contacts_title), 0));
+//        optionList.add(new OptionObject(R.drawable.icon_recentcalls, getString(R.string.option_item_recentCalls_title), 0));
         optionList.add(new OptionObject(R.drawable.icon_systeminformation, getString(R.string.option_item_systemInformation_title), 0));
         optionList.add(new OptionObject(R.drawable.icon_usersettings, getString(R.string.option_item_userSettings_title), 0));
-        optionList.add(new OptionObject(R.drawable.icon_favorite, getString(R.string.option_item_favorite_title), 0));
+//        optionList.add(new OptionObject(R.drawable.icon_favorite, getString(R.string.option_item_favorite_title), 0));
 
         optionAdapter = new OptionAdapter(context, optionList);
 
