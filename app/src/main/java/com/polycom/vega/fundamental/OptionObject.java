@@ -3,7 +3,7 @@ package com.polycom.vega.fundamental;
 /**
  * Created by xwcheng on 8/21/2015.
  */
-public class OptionObject {
+public class OptionObject extends Object {
     private String title;
     private int iconId;
     private int fragmentId;

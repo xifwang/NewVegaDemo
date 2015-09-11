@@ -107,8 +107,12 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 headerBar.setVisibility(View.GONE);
 
-                if (checkedId == R.id.bottombar_placeacall_fragment_recentCallsRadioButton) {
+                if (checkedId == R.id.bottombar_placeacall_fragment_favoriteRadioButton) {
+
+                } else if (checkedId == R.id.bottombar_placeacall_fragment_recentCallsRadioButton) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new RecentCallFragment()).commit();
+                } else if (checkedId == R.id.bottombar_placeacall_fragment_contactsRadioButton) {
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new ContactsFragment()).commit();
                 } else if (checkedId == R.id.bottombar_placeacall_fragment_keypadRadioButton) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
                 }
@@ -124,7 +128,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
 //            builder.setTitle(getString(R.string.option_item_recentCalls_title));
 //
 //            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(fragment.getContext(), android.R.layout.simple_selectable_list_item);
-//            arrayAdapter.add("172.21.97.153");
+//            arrayAdapter.add("172.21.97.215");
 //            arrayAdapter.add("172.21.97.190");
 //            arrayAdapter.add("172.21.97.157");
 //

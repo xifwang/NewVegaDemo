@@ -162,7 +162,7 @@ public class KeypadFragment extends Fragment implements IActivity, AdapterView
 
     private void placeACall() {
         String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
-        final String destinationIp = "172.21.97.153";
+        final String destinationIp = "172.21.97.215";
         final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
         dialog.setMessage(getString(R.string.message_placeACall));
 

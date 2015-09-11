@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class RecentCallAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         String call = getItem(position);
 
         if (convertView == null) {
@@ -29,10 +30,14 @@ public class RecentCallAdapter extends ArrayAdapter<String> {
 
         TextView textView = (TextView) convertView.findViewById(R.id.recentcalllist_item_textView);
         textView.setText(call);
+
+        final View finalConvertView = convertView;
+        final AdapterView adapterView = (AdapterView) parent;
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                adapterView.getOnItemClickListener().onItemClick(adapterView, finalConvertView, position, 0);
             }
         });
 
