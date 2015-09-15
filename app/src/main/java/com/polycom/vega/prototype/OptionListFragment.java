@@ -49,6 +49,8 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
 
         if (position == 1) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new PlaceACallFragment()).commit();
+        } else if (position == 3) {
+            fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new SystemInfoFragment()).commit();
         }
     }
 
