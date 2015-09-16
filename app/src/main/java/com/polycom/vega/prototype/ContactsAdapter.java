@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.polycom.vega.fundamental.ContactObject;
@@ -31,6 +32,14 @@ public class ContactsAdapter extends ArrayAdapter<ContactObject> {
 
         final View finalConvertView = convertView;
         final AdapterView adapterView = (AdapterView) parent;
+
+        ImageView avatarImageView = (ImageView) convertView.findViewById(R.id.fragment_contact_list_item_avatarImageView);
+        avatarImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapterView.getOnItemClickListener().onItemClick(adapterView, finalConvertView, position, 0);
+            }
+        });
 
         TextView displayNameTextView = (TextView) convertView.findViewById(R.id.fragment_contact_list_item_displayNameTextView);
         displayNameTextView.setText(contact.getDisplayName());
