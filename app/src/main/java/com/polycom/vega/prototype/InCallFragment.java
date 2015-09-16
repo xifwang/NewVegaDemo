@@ -60,6 +60,8 @@ public class InCallFragment extends VegaFragment implements IActivity, Thread.Un
         View header = fragment.findViewById(R.id.fragment_incall_header);
         consumingTimeTextView = (TextView) header.findViewById(R.id.header_option_item_layout_options_titleTextView);
 
+        fragmentManager.beginTransaction().replace(R.id.fragment_incall_contentViewLayout, new LocalGsControlFragment()).commit();
+
         ImageButton backImageButton = (ImageButton) header.findViewById(R.id.header_option_item_layout_back_icon_imageButton);
         backImageButton.setOnClickListener(backImageButton_OnClickListener);
 

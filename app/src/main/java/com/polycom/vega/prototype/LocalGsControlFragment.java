@@ -2,7 +2,6 @@ package com.polycom.vega.prototype;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +18,12 @@ import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.fundamental.VegaFragment;
 
 /**
  * Created by xifwang on 9/16/2015.
  */
-public class LocalGsControlFragment extends Fragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
-
-    private View fragment;
-
+public class LocalGsControlFragment extends VegaFragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
     private Button muteButton;
     private Button cameraButton;
     private SeekBar volSeekBar;
@@ -34,15 +31,16 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
     private boolean isCameraOff;
     private int progressVolume;
 
-
     @Nullable
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         fragment = inflater.inflate(R.layout.fragment_local_gs_control, container, false);
-        try {
+        context = fragment.getContext();
+        application = (VegaApplication) getActivity().getApplication();
+        fragmentManager = getActivity().getSupportFragmentManager();
 
+        try {
             initComponent();
             initComponentState();
             initAnimation();
@@ -54,11 +52,8 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         return fragment;
     }
 
-
     @Override
     public void initComponent() {
-
-
         //init the button status
         checkAudioMuteStatus();
         checkCameraOffStatus();
@@ -73,7 +68,6 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         volSeekBar = (SeekBar) fragment.findViewById(R.id.fragment_local_gs_control_volumebutton);
         volSeekBar.setOnSeekBarChangeListener(volume_ChangeListener);
     }
-
 
     private View.OnClickListener muteButton_OnClickListener = new View.OnClickListener() {
         @Override
@@ -107,7 +101,6 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         }
 
     };
-
 
     @Override
     public void initComponentState() {
@@ -207,7 +200,6 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
             muteButton.setText(R.string.unmute);
         }
     }
-
 
     private void disableCamera() {
 
