@@ -1,6 +1,17 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"></LinearLayout>
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/activity_main_incall_header"
+        layout="@layout/fragment_incall_global_header"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"></include>
+
+    <LinearLayout
+        android:id="@+id/fragment_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></LinearLayout>
+</LinearLayout>

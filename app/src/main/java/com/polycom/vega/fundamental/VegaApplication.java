@@ -15,6 +15,7 @@ public class VegaApplication extends Application {
 
     private String serverUrl;
     private SystemObject currentSystemInfo;
+    private CallingInformationObject callingInfo;
 
     public String getServerUrl() {
         return serverUrl;
@@ -30,5 +31,13 @@ public class VegaApplication extends Application {
 
     public void setCurrentSystemInfo(SystemObject currentSystemInfo) {
         this.currentSystemInfo = currentSystemInfo;
+    }
+
+    public CallingInformationObject getCallingInfo() {
+        return callingInfo;
+    }
+
+    public void setCallingInfo(CallingInformationObject callingInfo) {
+        this.callingInfo = callingInfo;
     }
 }

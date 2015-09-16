@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_incall_global_header"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="#11cd6e"
+    android:elevation="8dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="4dp">
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_global_header_phone" />
+
+    <TextView
+        android:id="@+id/fragment_incall_global_header_titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="[Calling with someone ...]"
+        android:textColor="@android:color/white"
+        android:textSize="24dp" />
+</LinearLayout>

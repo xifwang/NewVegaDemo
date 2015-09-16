@@ -2,11 +2,9 @@ package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.fundamental.VegaFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,9 +29,7 @@ import java.util.ArrayList;
 /**
  * Created by Michael on 9/10/2015.
  */
-public class RecentCallFragment extends Fragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind, AdapterView.OnItemClickListener {
-    private View fragment;
-    private Context context;
+public class RecentCallFragment extends VegaFragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind, AdapterView.OnItemClickListener {
     private int conferenceIndex;
     private ListView listView;
     private ArrayList<String> calls;
@@ -43,6 +40,10 @@ public class RecentCallFragment extends Fragment implements Thread.UncaughtExcep
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragment = inflater.inflate(R.layout.fragment_recentcall, container, false);
         context = fragment.getContext();
+        application = (VegaApplication) getActivity().getApplication();
+        fragmentManager = getActivity().getSupportFragmentManager();
+
+        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();

@@ -2,7 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:orientation="horizontal">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <ImageView
         android:id="@+id/fragment_contact_list_item_avatarImageView"
@@ -22,8 +25,8 @@
 
     <ImageButton
         android:id="@+id/fragment_contact_list_item_deleteUserImageButton"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:src="@drawable/icon_delete" />

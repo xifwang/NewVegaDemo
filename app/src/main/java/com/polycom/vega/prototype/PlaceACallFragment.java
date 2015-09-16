@@ -2,36 +2,24 @@ package com.polycom.vega.prototype;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.ScaleAnimation;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
-import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
-import com.yalantis.contextmenu.lib.MenuObject;
-import com.yalantis.contextmenu.lib.MenuParams;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.polycom.vega.fundamental.VegaFragment;
 
 /**
  * Created by xwcheng on 8/21/2015.
  */
-public class PlaceACallFragment extends Fragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind {
-    private RelativeLayout fragment;
-    private LinearLayout header;
-    private View headerBar;
+public class PlaceACallFragment extends VegaFragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind {
     private View bottomBar;
     private VegaApplication application;
     private RadioGroup bottomBarRadioGroup;
@@ -39,11 +27,12 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        try {
-            fragment = (RelativeLayout) inflater.inflate(R.layout.fragment_placeacall, container, false);
-        } catch (Exception ex) {
-            Toast.makeText(getView().getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        fragment = inflater.inflate(R.layout.fragment_placeacall, container, false);
+        context = fragment.getContext();
+        application = (VegaApplication) getActivity().getApplication();
+        fragmentManager = getActivity().getSupportFragmentManager();
+
+        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -51,7 +40,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         registerNotification();
         dataBind();
 
-        headerBar.setVisibility(View.GONE);
         getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
 
         return fragment;
@@ -59,45 +47,6 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
 
     @Override
     public void initComponent() {
-        header = (LinearLayout) fragment.findViewById(R.id.header_placeacall_fragment);
-
-        ((TextView) header.findViewById(R.id.header_option_item_layout_options_titleTextView))
-                .setText(getString(R.string.option_item_placeACall_title));
-
-        ((ImageButton) header.findViewById(R.id
-                .header_option_item_layout_back_icon_imageButton))
-                .setOnClickListener(backHeaderButton_OnClickListener);
-
-        ((ImageButton) header.findViewById(R.id.header_option_item_layout_options_icon_imageButton))
-                .setOnClickListener(optionsHeaderButton_OnClickListener);
-
-        application = (VegaApplication) getActivity().getApplicationContext();
-
-        ImageButton optionMenuButton = (ImageButton) header.findViewById(R.id.header_option_item_layout_options_icon_imageButton);
-        optionMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MenuObject close = new MenuObject();
-                close.setResource(R.drawable.menu_icon_close);
-
-                MenuObject send = new MenuObject("Test");
-                send.setResource(R.drawable.menu_icon_test);
-
-                List<MenuObject> menuObjects = new ArrayList<>();
-                menuObjects.add(close);
-                menuObjects.add(send);
-
-                MenuParams menuParams = new MenuParams();
-                menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.abc_action_bar_stacked_max_height));
-                menuParams.setMenuObjects(menuObjects);
-                menuParams.setClosableOutside(true);
-                ContextMenuDialogFragment menuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
-                menuDialogFragment.show(getFragmentManager(), "ContextMenuDialogFragment");
-            }
-        });
-
-        headerBar = fragment.findViewById(R.id.header_placeacall_fragment);
-
         bottomBar = fragment.findViewById(R.id.bottombar_placeacall_fragment);
 
         bottomBarRadioGroup = (RadioGroup) bottomBar.findViewById(R.id
@@ -105,14 +54,16 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         bottomBarRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                headerBar.setVisibility(View.GONE);
-
                 if (checkedId == R.id.bottombar_placeacall_fragment_favoriteRadioButton) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new FavoriteFragment()).commit();
                 } else if (checkedId == R.id.bottombar_placeacall_fragment_recentCallsRadioButton) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new RecentCallFragment()).commit();
                 } else if (checkedId == R.id.bottombar_placeacall_fragment_contactsRadioButton) {
-                    getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new ContactsFragment()).commit();
+                    try {
+                        getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new ContactsFragment()).commit();
+                    } catch (Exception ex) {
+                        Log.d(fragment.getId() + "", ex.getMessage());
+                    }
                 } else if (checkedId == R.id.bottombar_placeacall_fragment_keypadRadioButton) {
                     getFragmentManager().beginTransaction().replace(R.id.fragment_placeacall_maincontainer, new KeypadFragment()).commit();
                 }
@@ -167,7 +118,7 @@ public class PlaceACallFragment extends Fragment implements Thread.UncaughtExcep
         scaleAnimation.setDuration(500);
         LayoutAnimationController animationController = new LayoutAnimationController(scaleAnimation, 0.1f);
 
-        fragment.setLayoutAnimation(animationController);
+        ((RelativeLayout) fragment).setLayoutAnimation(animationController);
     }
 
     @Override

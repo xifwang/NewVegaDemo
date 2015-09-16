@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.fundamental.VegaFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,13 +33,8 @@ import java.util.ArrayList;
 /**
  * Created by xwcheng on 9/9/2015.
  */
-public class KeypadFragment extends Fragment implements IActivity, AdapterView
-        .OnItemClickListener, Thread.UncaughtExceptionHandler {
-
-    private VegaApplication application;
+public class KeypadFragment extends VegaFragment implements IActivity, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
     private int conferenceIndex;
-    private LinearLayout fragment;
-    private Context context;
     private ArrayList<String> keyList;
     private KeypadAdapter keypadAdapter;
     private GridView keypadGridView;
@@ -48,8 +43,12 @@ public class KeypadFragment extends Fragment implements IActivity, AdapterView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        application = (VegaApplication) getActivity().getApplication();
         fragment = (LinearLayout) inflater.inflate(R.layout.fragment_keypad, container, false);
         context = fragment.getContext();
+        fragmentManager = getActivity().getSupportFragmentManager();
+
+        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -117,8 +116,6 @@ public class KeypadFragment extends Fragment implements IActivity, AdapterView
 
     @Override
     public void initComponent() {
-        application = (VegaApplication) getActivity().getApplicationContext();
-
         numberTextView = (TextView) fragment.findViewById(R.id.fragment_keypad_numberTextView);
 
         keyList = new ArrayList<String>();

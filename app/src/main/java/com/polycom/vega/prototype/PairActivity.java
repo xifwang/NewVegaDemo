@@ -33,6 +33,8 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pair);
 
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         getSupportActionBar().hide();
 
         this.initComponent();
@@ -159,6 +161,6 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        ex.printStackTrace();
+        Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
