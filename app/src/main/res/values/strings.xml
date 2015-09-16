@@ -23,10 +23,15 @@
     <string name="option_item_systemInformation_title">System Information</string>
     <string name="option_item_userSettings_title">User Settings</string>
     <string name="option_item_favorite_title">Favorite</string>
+    <string name="option_item_gs_control">GS Control</string>
     <string name="display_name_hint">Display name</string>
     <string name="destination_ip_hint">Destination IP/Number</string>
     <string name="add_contact_dialog_title">Add new contact</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="in_call_title_format">Calling with %s</string>
+    <string name="mute">Mute</string>
+    <string name="unmute">Unmute</string>
+    <string name="cameraon">Camera On</string>
+    <string name="cameraoff">Camera Off</string>
 </resources>

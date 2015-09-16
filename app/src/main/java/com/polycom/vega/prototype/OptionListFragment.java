@@ -51,7 +51,13 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
 
         if (position == 1) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new PlaceACallFragment()).commit();
+        } else if (position == 3) {
+            fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new SystemInfoFragment()).commit();
         }
+        else if (position == 4) {
+            fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new LocalGsControlFragment()).commit();
+        }
+
     }
 
     @Override
@@ -64,8 +70,10 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
 //        optionList.add(new OptionObject(R.drawable.icon_contacts, getString(R.string.option_item_contacts_title), 0));
 //        optionList.add(new OptionObject(R.drawable.icon_recentcalls, getString(R.string.option_item_recentCalls_title), 0));
         optionList.add(new OptionObject(R.drawable.icon_systeminformation, getString(R.string.option_item_systemInformation_title), 0));
+        optionList.add(new OptionObject(R.drawable.menu_icon_test, getString(R.string.option_item_gs_control), 0));
         optionList.add(new OptionObject(R.drawable.icon_usersettings, getString(R.string.option_item_userSettings_title), 0));
 //        optionList.add(new OptionObject(R.drawable.icon_favorite, getString(R.string.option_item_favorite_title), 0));
+
 
         optionAdapter = new OptionAdapter(context, optionList);
 
