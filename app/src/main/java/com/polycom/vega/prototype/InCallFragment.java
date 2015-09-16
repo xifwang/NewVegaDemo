@@ -43,8 +43,6 @@ public class InCallFragment extends VegaFragment implements IActivity, Thread.Un
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        getActivity().findViewById(R.id.activity_main_incall_header).setVisibility(View.GONE);
-
         Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();

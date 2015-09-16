@@ -57,14 +57,15 @@ public class MainActivity extends AppCompatActivity implements Thread.UncaughtEx
     public void onAttachFragment(android.support.v4.app.Fragment fragment) {
         super.onAttachFragment(fragment);
 
-        checkInCallStatus();
+        boolean isInCallFragment = (fragment instanceof InCallFragment || fragment instanceof LocalGsControlFragment);
+        checkInCallStatus(isInCallFragment);
     }
 
-    private void checkInCallStatus() {
+    private void checkInCallStatus(boolean isInCallFragment) {
         CallingInformationObject callingInfo = ((VegaApplication) getApplication()).getCallingInfo();
         final View inCallGlobalHeader = findViewById(R.id.activity_main_incall_header);
 
-        if (callingInfo != null) {
+        if (callingInfo != null && !isInCallFragment) {
             inCallGlobalHeader.setVisibility(View.VISIBLE);
             inCallGlobalHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
