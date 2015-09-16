@@ -53,8 +53,7 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new PlaceACallFragment()).commit();
         } else if (position == 3) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new SystemInfoFragment()).commit();
-        }
-        else if (position == 4) {
+        } else if (position == 4) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new LocalGsControlFragment()).commit();
         }
 
