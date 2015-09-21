@@ -62,7 +62,7 @@ public class KeypadFragment extends Fragment implements IActivity, AdapterView
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD, 0.5F);
+        audioManager.playSoundEffect(AudioManager.FX_KEY_CLICK, 0.5F);
 
         switch (position) {
             case 0:
