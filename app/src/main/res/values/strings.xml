@@ -34,4 +34,20 @@
     <string name="unmute">Unmute</string>
     <string name="cameraon">Camera On</string>
     <string name="cameraoff">Camera Off</string>
+    <string name="enUS">American English</string>
+    <string name="ar">العَرَبِيَّة</string>
+    <string name="enGB">British English</string>
+    <string name="deDE">Deutsch</string>
+    <string name="esES">Español</string>
+    <string name="frFR">Français</string>
+    <string name="itIT">Italiano</string>
+    <string name="jaJP">日本語</string>
+    <string name="koKR">한국어</string>
+    <string name="huHU">Magyar</string>
+    <string name="nbNO">Norsk</string>
+    <string name="plPL">Polski</string>
+    <string name="ptPT">Português</string>
+    <string name="ruRU">Pyccknñ</string>
+    <string name="zhCN">简体中文</string>
+    <string name="zhTW">繁體中文</string>
 </resources>
