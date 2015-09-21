@@ -1,8 +1,6 @@
 package com.polycom.vega.prototype;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,20 +8,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.OptionObject;
+import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.fundamental.VegaFragment;
 
 import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class OptionListFragment extends Fragment implements IActivity, IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
-
-    private RelativeLayout fragment;
-    private Context context;
+public class OptionListFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
     private ArrayList<OptionObject> optionList;
     private OptionAdapter optionAdapter;
     private GridView optionListView;
@@ -32,6 +30,10 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = getActivity().getApplicationContext();
         fragment = (RelativeLayout) inflater.inflate(R.layout.fragment_optionlist, container, false);
+        application = (VegaApplication) getActivity().getApplication();
+        fragmentManager = getActivity().getSupportFragmentManager();
+
+        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         return fragment;
     }
@@ -47,12 +49,13 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-        if (position == 1) {
+        if (position == 0) {
+            fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new FragmentAdministration()).commit();
+        } else if (position == 1) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new PlaceACallFragment()).commit();
         } else if (position == 3) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new SystemInfoFragment()).commit();
-        }
-        else if (position == 4) {
+        } else if (position == 4) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new LocalGsControlFragment()).commit();
         }
 
@@ -102,6 +105,6 @@ public class OptionListFragment extends Fragment implements IActivity, IDataBind
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        ex.printStackTrace();
+        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

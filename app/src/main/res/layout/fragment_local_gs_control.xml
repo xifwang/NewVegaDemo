@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
     <Button
+        android:id="@+id/fragment_local_gs_control_mutebutton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_margin="15dp"
-        android:id="@+id/fragment_local_gs_control_mutebutton"
-        android:text="@string/mute"
-        android:gravity="bottom|center"
-        android:background="@drawable/mic_off"
+        android:background="@drawable/icon_mic_off"
         android:clickable="true"
         android:contentDescription="muteIcon"
+        android:gravity="bottom|center"
+        android:text="@string/mute"
         android:visibility="visible" />
 
-
     <Button
+        android:id="@+id/fragment_local_gs_control_camerabutton"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_margin="15dp"
-        android:id="@+id/fragment_local_gs_control_camerabutton"
-        android:text="@string/cameraoff"
-        android:gravity="bottom|center"
         android:layout_toRightOf="@+id/fragment_local_gs_control_mutebutton"
-        android:background="@drawable/camera_off"
+        android:background="@drawable/icon_video_off"
         android:clickable="true"
         android:contentDescription="cameraIcon"
+        android:gravity="bottom|center"
+        android:text="@string/cameraoff"
         android:visibility="visible" />
 
 
     <SeekBar
+        android:id="@+id/fragment_local_gs_control_volumebutton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_margin="10dp"
-        android:id="@+id/fragment_local_gs_control_volumebutton"
-        android:layout_gravity="center_vertical"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/fragment_local_gs_control_mutebutton"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
         android:layout_weight="1"
         android:max="100"
         android:text="Volume"
-        android:layout_alignParentEnd="true"
         android:visibility="invisible" />
 
 </RelativeLayout>

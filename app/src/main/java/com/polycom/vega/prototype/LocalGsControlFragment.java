@@ -1,19 +1,14 @@
 package com.polycom.vega.prototype;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,15 +18,12 @@ import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
-import com.polycom.vega.restobject.SystemObject;
+import com.polycom.vega.fundamental.VegaFragment;
 
 /**
  * Created by xifwang on 9/16/2015.
  */
-public class LocalGsControlFragment extends Fragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
-
-    private View fragment;
-
+public class LocalGsControlFragment extends VegaFragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
     private Button muteButton;
     private Button cameraButton;
     private SeekBar volSeekBar;
@@ -39,15 +31,16 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
     private boolean isCameraOff;
     private int progressVolume;
 
-
     @Nullable
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         fragment = inflater.inflate(R.layout.fragment_local_gs_control, container, false);
-        try {
+        context = fragment.getContext();
+        application = (VegaApplication) getActivity().getApplication();
+        fragmentManager = getActivity().getSupportFragmentManager();
 
+        try {
             initComponent();
             initComponentState();
             initAnimation();
@@ -59,11 +52,8 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         return fragment;
     }
 
-
     @Override
     public void initComponent() {
-
-
         //init the button status
         checkAudioMuteStatus();
         checkCameraOffStatus();
@@ -79,24 +69,21 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         volSeekBar.setOnSeekBarChangeListener(volume_ChangeListener);
     }
 
-
-
-
-    private View.OnClickListener muteButton_OnClickListener = new View.OnClickListener(){
+    private View.OnClickListener muteButton_OnClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View view){
+        public void onClick(View view) {
             muteAudio();
         }
     };
 
-    private View.OnClickListener careraButton_OnClickListener = new View.OnClickListener(){
+    private View.OnClickListener careraButton_OnClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View view){
+        public void onClick(View view) {
             disableCamera();
         }
     };
 
-    private SeekBar.OnSeekBarChangeListener volume_ChangeListener = new SeekBar.OnSeekBarChangeListener(){
+    private SeekBar.OnSeekBarChangeListener volume_ChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             updateVolumeSeekBar(progress);
@@ -114,7 +101,6 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         }
 
     };
-
 
     @Override
     public void initComponentState() {
@@ -152,13 +138,14 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
                 }
             };
             //Request.Method.PUT
-            StringRequest stringRequest =  new StringRequest(Request.Method.PUT, url,responseListener,errorListener){
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, responseListener, errorListener) {
                 @Override
                 public byte[] getBody() throws AuthFailureError {
-                    String isEPMutedStr = isEndpointMuted ? "false":"true";
+                    String isEPMutedStr = isEndpointMuted ? "false" : "true";
 
                     return isEPMutedStr.getBytes();
                 }
+
                 @Override
                 public String getBodyContentType() {
                     return "application/json";
@@ -183,7 +170,7 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if(response.equals("false"))
+                    if (response.equals("false"))
                         isEndpointMuted = false;
                     else
                         isEndpointMuted = true;
@@ -196,7 +183,7 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
                 }
             };
 
-            StringRequest stringRequest =  new StringRequest(url,responseListener,errorListener);
+            StringRequest stringRequest = new StringRequest(url, responseListener, errorListener);
             Volley.newRequestQueue(getActivity().getApplicationContext()).add(stringRequest);
 
         } catch (Exception e) {
@@ -204,20 +191,15 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         }
     }
 
-    private void updateMuteBottomImage(boolean isEndpointMuted){
-        if(isEndpointMuted) {
-            muteButton.setBackgroundResource(R.drawable.mic_off);
+    private void updateMuteBottomImage(boolean isEndpointMuted) {
+        if (isEndpointMuted) {
+            muteButton.setBackgroundResource(R.drawable.icon_mic_off);
             muteButton.setText(R.string.mute);
-        }
-        else {
-            muteButton.setBackgroundResource(R.drawable.mic_on);
+        } else {
+            muteButton.setBackgroundResource(R.drawable.icon_mic);
             muteButton.setText(R.string.unmute);
         }
     }
-
-
-
-
 
     private void disableCamera() {
 
@@ -240,13 +222,14 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
                 }
             };
             //Request.Method.PUT
-            StringRequest stringRequest =  new StringRequest(Request.Method.PUT, url,responseListener,errorListener){
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, responseListener, errorListener) {
                 @Override
                 public byte[] getBody() throws AuthFailureError {
-                    String isCameraOffStr = isCameraOff ? "false":"true";
+                    String isCameraOffStr = isCameraOff ? "false" : "true";
 
                     return isCameraOffStr.getBytes();
                 }
+
                 @Override
                 public String getBodyContentType() {
                     return "application/json";
@@ -271,7 +254,7 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if(response.equals("false"))
+                    if (response.equals("false"))
                         isCameraOff = false;
                     else
                         isCameraOff = true;
@@ -284,7 +267,7 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
                 }
             };
 
-            StringRequest stringRequest =  new StringRequest(url,responseListener,errorListener);
+            StringRequest stringRequest = new StringRequest(url, responseListener, errorListener);
             Volley.newRequestQueue(getActivity().getApplicationContext()).add(stringRequest);
 
         } catch (Exception e) {
@@ -311,7 +294,7 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
                 }
             };
 
-            StringRequest stringRequest =  new StringRequest(url,responseListener,errorListener);
+            StringRequest stringRequest = new StringRequest(url, responseListener, errorListener);
             Volley.newRequestQueue(getActivity().getApplicationContext()).add(stringRequest);
 
         } catch (Exception e) {
@@ -319,7 +302,7 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         }
     }
 
-    private void updateVolumeSeekBar(final int currentVolume){
+    private void updateVolumeSeekBar(final int currentVolume) {
         //send REST to mute audio
         String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/audio/volume";
 
@@ -338,12 +321,13 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
                 }
             };
             //Request.Method.PUT
-            StringRequest stringRequest =  new StringRequest(Request.Method.PUT, url,responseListener,errorListener){
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, responseListener, errorListener) {
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     String volProgress = Integer.toString(currentVolume);
                     return volProgress.getBytes();
                 }
+
                 @Override
                 public String getBodyContentType() {
                     return "application/json";
@@ -359,13 +343,12 @@ public class LocalGsControlFragment extends Fragment implements IActivity, IData
         }
     }
 
-    private void updateCameraBottomImage(boolean isCameraOff){
-        if(isCameraOff) {
-            cameraButton.setBackgroundResource(R.drawable.camera_off);
+    private void updateCameraBottomImage(boolean isCameraOff) {
+        if (isCameraOff) {
+            cameraButton.setBackgroundResource(R.drawable.icon_video_off);
             cameraButton.setText(R.string.cameraoff);
-        }
-        else {
-            cameraButton.setBackgroundResource(R.drawable.camera_on);
+        } else {
+            cameraButton.setBackgroundResource(R.drawable.icon_video);
             cameraButton.setText(R.string.cameraon);
         }
     }

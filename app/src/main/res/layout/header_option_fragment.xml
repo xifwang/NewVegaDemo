@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/ripple_material_light"
+    android:background="@android:color/transparent"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="8dp"
@@ -20,14 +20,15 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Large Text"
-        android:textColor="@color/white"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="[Large Text]"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#7dc5eb" />
 
     <ImageButton
         android:id="@+id/header_option_item_layout_options_icon_imageButton"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:background="@drawable/header_option_item_layout_dots_icon" />
+        android:background="@drawable/header_option_item_layout_dots_icon"
+        android:visibility="gone" />
 
 </LinearLayout>

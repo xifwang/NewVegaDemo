@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.RingtoneManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.fundamental.VegaFragment;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -32,8 +32,7 @@ import java.util.TimerTask;
 /**
  * Created by xwcheng on 8/17/2015.
  */
-public class SettingsFragment extends Fragment implements IActivity, IDataBind {
-    private View view;
+public class SettingsFragment extends VegaFragment implements IActivity, IDataBind {
     private Timer timer;
     private TextView titleTextView;
     private TextView errorTextView;
@@ -43,22 +42,23 @@ public class SettingsFragment extends Fragment implements IActivity, IDataBind {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_settings, container, false);
+        fragment = inflater.inflate(R.layout.fragment_settings, container, false);
+        context = fragment.getContext();
+        application = (VegaApplication) getActivity().getApplication();
+        fragmentManager = getActivity().getSupportFragmentManager();
 
         this.initComponent();
         this.initComponentState();
         this.registerNotification();
         this.dataBind();
 
-        return this.view;
+        return fragment;
     }
 
     @Override
     public void initComponent() {
-        this.application = (VegaApplication) getActivity().getApplicationContext();
-
-        this.titleTextView = (TextView) this.view.findViewById(R.id.settingsflagment_titleTextView);
-        this.errorTextView = (TextView) this.view.findViewById(R.id.settingfragment_errorTextView);
+        this.titleTextView = (TextView) fragment.findViewById(R.id.settingsflagment_titleTextView);
+        this.errorTextView = (TextView) fragment.findViewById(R.id.settingfragment_errorTextView);
 
         this.broadcastReceiver = new BroadcastReceiver() {
             @Override

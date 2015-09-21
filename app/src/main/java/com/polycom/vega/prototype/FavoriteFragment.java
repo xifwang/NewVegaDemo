@@ -2,11 +2,9 @@ package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,7 @@ import com.polycom.vega.fundamental.ContactObject;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.fundamental.VegaFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,9 +30,7 @@ import java.util.ArrayList;
 /**
  * Created by xwcheng on 9/11/2015.
  */
-public class FavoriteFragment extends Fragment implements IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler, IActivity {
-    private View fragment;
-    private Context context;
+public class FavoriteFragment extends VegaFragment implements IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler, IActivity {
     private int conferenceIndex;
     private GridView favoriteGridView;
     private ArrayList<ContactObject> favorites;
@@ -44,6 +41,10 @@ public class FavoriteFragment extends Fragment implements IDataBind, AdapterView
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragment = inflater.inflate(R.layout.fragment_favorite, container, false);
         context = fragment.getContext();
+        application = (VegaApplication) getActivity().getApplication();
+        fragmentManager = getActivity().getSupportFragmentManager();
+
+        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();

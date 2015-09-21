@@ -63,8 +63,6 @@ public class SystemInfoFragment extends Fragment implements IActivity, IDataBind
         String strSysInfo = (String) getActivity().getIntent().getExtras().get("response");
         SystemObject systemInfo = JSON.parseObject(strSysInfo, SystemObject.class);
 
-        Toast.makeText(context, strSysInfo != null ? strSysInfo.toString() : null, Toast.LENGTH_SHORT).show();
-
         populateSysInfoView(systemInfo);
     }
 

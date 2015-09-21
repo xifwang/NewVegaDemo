@@ -10,7 +10,7 @@
     <string name="title_activity_demo">DemoActivity</string>
     <string name="button_placeACall_text">Place A Call</string>
     <string name="button_endCall_text">End Call</string>
-    <string name="message_placeACall">Please wait for placing a call...</string>
+    <string name="message_placeACall">Please wait for placing a call &#8230;</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="copyright_declaration">© 2015 Polycom.</string>
     <string name="title_activity_main">MainActivity</string>
@@ -29,8 +29,25 @@
     <string name="add_contact_dialog_title">Add new contact</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="in_call_title_format">Calling with %s</string>
     <string name="mute">Mute</string>
     <string name="unmute">Unmute</string>
     <string name="cameraon">Camera On</string>
     <string name="cameraoff">Camera Off</string>
+    <string name="enUS">American English</string>
+    <string name="ar">العَرَبِيَّة</string>
+    <string name="enGB">British English</string>
+    <string name="deDE">Deutsch</string>
+    <string name="esES">Español</string>
+    <string name="frFR">Français</string>
+    <string name="itIT">Italiano</string>
+    <string name="jaJP">日本語</string>
+    <string name="koKR">한국어</string>
+    <string name="huHU">Magyar</string>
+    <string name="nbNO">Norsk</string>
+    <string name="plPL">Polski</string>
+    <string name="ptPT">Português</string>
+    <string name="ruRU">Pyccknñ</string>
+    <string name="zhCN">简体中文</string>
+    <string name="zhTW">繁體中文</string>
 </resources>

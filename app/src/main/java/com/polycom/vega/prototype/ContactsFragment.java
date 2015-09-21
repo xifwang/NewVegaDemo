@@ -2,11 +2,10 @@ package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,23 +20,24 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.melnykov.fab.FloatingActionButton;
+import com.polycom.vega.fundamental.CallingInformationObject;
 import com.polycom.vega.fundamental.ContactObject;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.fundamental.VegaFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by xwcheng on 9/11/2015.
  */
-public class ContactsFragment extends Fragment implements IActivity, IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
-    private View fragment;
-    private Context context;
-    private ListView listView;
+public class ContactsFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
+    private ListView contactListView;
     private FloatingActionButton addButton;
     private ArrayList<ContactObject> contacts;
     private ArrayAdapter<ContactObject> contactAdapter;
@@ -46,26 +46,33 @@ public class ContactsFragment extends Fragment implements IActivity, IDataBind, 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragment = inflater.inflate(R.layout.fragment_contacts, container, false);
+        try {
+            fragment = inflater.inflate(R.layout.fragment_contacts, container, false);
+            context = fragment.getContext();
+            application = (VegaApplication) getActivity().getApplication();
+            fragmentManager = getActivity().getSupportFragmentManager();
 
-        fragment.isInEditMode();
+            Thread.currentThread().setUncaughtExceptionHandler(this);
 
-        context = fragment.getContext();
+            fragment.isInEditMode();
 
-        initComponent();
-        initComponentState();
-        initAnimation();
-        dataBind();
+            initComponent();
+            initComponentState();
+            initAnimation();
+            dataBind();
+        } catch (Exception ex) {
+            Log.d(fragment.getId() + "", ex.getMessage());
+        }
 
         return fragment;
     }
 
     @Override
     public void initComponent() {
-        listView = (ListView) fragment.findViewById(R.id.fragment_contacts_listView);
+        contactListView = (ListView) fragment.findViewById(R.id.fragment_contacts_listView);
 
         addButton = (FloatingActionButton) fragment.findViewById(R.id.fragment_contacts_floatingActionButton);
-        addButton.attachToListView(listView);
+        addButton.attachToListView(contactListView);
         addButton.setOnClickListener(addButton_OnClickListener);
     }
 
@@ -114,12 +121,12 @@ public class ContactsFragment extends Fragment implements IActivity, IDataBind, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        placeACall(contacts.get(position).getDestinationIp());
+        placeACall(contacts.get(position));
     }
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-
+        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -131,19 +138,19 @@ public class ContactsFragment extends Fragment implements IActivity, IDataBind, 
 
         contactAdapter = new ContactsAdapter(context, contacts);
 
-        listView.setAdapter(contactAdapter);
-        listView.setOnItemClickListener(this);
+        contactListView.setAdapter(contactAdapter);
+        contactListView.setOnItemClickListener(this);
     }
 
-    private void placeACall(final String destinationIp) {
-        String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences?_dc=1439978043968";
+    private void placeACall(final ContactObject contact) {
+        final String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences?_dc=1439978043968";
         final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
         dialog.setMessage(getString(R.string.message_placeACall));
 
         try {
             dialog.show();
 
-            JSONObject json = new JSONObject("{\"address\":\"" + destinationIp + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
+            JSONObject json = new JSONObject("{\"address\":\"" + contact.getDestinationIp() + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
             Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -156,22 +163,28 @@ public class ContactsFragment extends Fragment implements IActivity, IDataBind, 
                     dialog.dismiss();
                     Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
 
-                    // TODO: Need to improve.
-                    conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
+                    CallingInformationObject callingInfo = new CallingInformationObject();
+                    try {
+                        // TODO: Need to improve.
+                        conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(fragment.getContext
-                            ());
-                    alertDialogBuilder.setMessage("In call with " + destinationIp);
-                    alertDialogBuilder.setCancelable(false);
-                    alertDialogBuilder.setPositiveButton(getString(R.string.button_endCall_text), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            endCall();
+                        callingInfo.setConferenceIndex(conferenceIndex);
+                        callingInfo.setContact(contact);
+                        callingInfo.setStartTime(new Date());
+                        callingInfo.setDestinationFullUrl(url);
+                    } catch (Exception ex) {
+                        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
 
-                            dialog.dismiss();
-                        }
-                    });
-                    alertDialogBuilder.show();
+                        return;
+                    }
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("callingInfo", callingInfo);
+
+                    InCallFragment inCallFragment = new InCallFragment();
+                    inCallFragment.setArguments(bundle);
+
+                    fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, inCallFragment).commit();
                 }
             };
 
@@ -179,34 +192,7 @@ public class ContactsFragment extends Fragment implements IActivity, IDataBind, 
 
             Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
         } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void endCall() {
-        String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
-
-        try {
-            JSONObject json = new JSONObject("{\"action\":\"hangup\"}");
-            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                }
-            };
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-//                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), "Call has been ended.", Toast.LENGTH_SHORT).show();
-                }
-            };
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
-
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }
