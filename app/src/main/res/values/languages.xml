@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="languages">
-        <item>en-US</item>
+        <item>en</item>
         <item>ar</item>
         <item>en-GB</item>
         <item>de-DE</item>
@@ -15,7 +15,7 @@
         <item>pl-PL</item>
         <item>pt-PT</item>
         <item>ru-RU</item>
-        <item>zh-CN</item>
+        <item>zh</item>
         <item>zh-TW</item>
     </string-array>
 </resources>
