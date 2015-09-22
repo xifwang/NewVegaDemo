@@ -22,6 +22,7 @@ import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.localstorage.LocalStorageHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,7 +150,20 @@ public class FragmentAdministration extends VegaFragment implements IActivity, I
         languageListAdapter = new ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, languageDisplayNames);
         languageListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         languageListSpinner.setAdapter(languageListAdapter);
-        languageListSpinner.setSelection(Arrays.asList(languages).indexOf(getResources().getConfiguration().locale.toString()));
+
+        String language = LocalStorageHelper.getInstance().getLanguage(context);
+
+        if (TextUtils.isEmpty(language)) {
+            language = "en";    // Description: English is current default UI language.
+
+            try {
+                LocalStorageHelper.getInstance().saveLanguage(context, language);
+            } catch (Exception ex) {
+                Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        languageListSpinner.setSelection(Arrays.asList(languages).indexOf(language));
         languageListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -157,9 +171,10 @@ public class FragmentAdministration extends VegaFragment implements IActivity, I
                 Configuration configuration = resources.getConfiguration();
                 DisplayMetrics displayMetrics = resources.getDisplayMetrics();
 
-                if (!TextUtils.equals(configuration.locale.toString(), languages[position])) {
+                if (!TextUtils.equals(LocalStorageHelper.getInstance().getLanguage(context), languages[position])) {
                     configuration.locale = new Locale(languages[position].toString());
                     resources.updateConfiguration(configuration, displayMetrics);
+                    LocalStorageHelper.getInstance().saveLanguage(context, languages[position].toString());
                     getActivity().finish();
                     getActivity().startActivity(getActivity().getIntent());
                 }
