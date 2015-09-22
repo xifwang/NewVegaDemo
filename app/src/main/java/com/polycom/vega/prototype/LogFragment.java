@@ -85,6 +85,6 @@ public class LogFragment extends VegaFragment implements IActivity, IDataBind, T
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-
+        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

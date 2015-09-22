@@ -4,11 +4,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +29,8 @@ import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.localstorage.LocalStorageHelper;
 import com.polycom.vega.restobject.SystemObject;
 
+import java.util.Locale;
+
 public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
     private BootstrapEditText urlTextEdit = null;
     private BootstrapButton pairButton = null;
@@ -41,6 +46,7 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
         getSupportActionBar().hide();
 
+        initUILanguage();
         initComponent();
         initComponentState();
     }
@@ -138,6 +144,21 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initUILanguage() {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Context context = getApplicationContext();
+        String language = LocalStorageHelper.getInstance().getLanguage(getApplicationContext());
+
+        if (!TextUtils.equals(configuration.locale.toString(), language)) {
+            configuration.locale = new Locale(language);
+            resources.updateConfiguration(configuration, displayMetrics);
+            this.finish();
+            this.startActivity(this.getIntent());
+        }
     }
 
     @Override
