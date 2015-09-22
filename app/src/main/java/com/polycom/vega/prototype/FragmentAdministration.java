@@ -88,17 +88,8 @@ public class FragmentAdministration extends VegaFragment implements IActivity, I
         logsBootstrapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setTitle(R.string.button_logs_text);
-                alertDialogBuilder.setCancelable(true);
-                alertDialogBuilder.setMessage("Should put some logs here.");
-                alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                alertDialogBuilder.show();
+                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id
+                        .fragment_main, new LogFragment()).commit();
             }
         });
 

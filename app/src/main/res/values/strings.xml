@@ -59,4 +59,6 @@
     <string name="button_demo_text">Demo</string>
     <string name="zh">简体中文</string>
     <string name="button_changepassword_text">Change Password</string>
+    <string name="radiobutton_export_text">Export</string>
+    <string name="radiobutton_back_text">Back</string>
 </resources>
