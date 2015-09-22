@@ -56,8 +56,6 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
 
             fragment.isInEditMode();
 
-            context = fragment.getContext();
-
             initComponent();
             initComponentState();
             initAnimation();

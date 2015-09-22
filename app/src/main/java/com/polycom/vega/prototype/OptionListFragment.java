@@ -49,7 +49,9 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-        if (position == 1) {
+        if (position == 0) {
+            fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new FragmentAdministration()).commit();
+        } else if (position == 1) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new PlaceACallFragment()).commit();
         } else if (position == 3) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new SystemInfoFragment()).commit();

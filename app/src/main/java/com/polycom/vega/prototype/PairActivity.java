@@ -1,11 +1,14 @@
 package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.localstorage.LocalStorageHelper;
 import com.polycom.vega.restobject.SystemObject;
 
 public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
@@ -37,8 +41,8 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
         getSupportActionBar().hide();
 
-        this.initComponent();
-        this.initComponentState();
+        initComponent();
+        initComponentState();
     }
 
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
@@ -138,10 +142,10 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
     @Override
     public void initComponent() {
-        this.application = (VegaApplication) getApplicationContext();
-        this.urlTextEdit = (BootstrapEditText) findViewById(R.id.urlEditText);
-        this.pairButton = (BootstrapButton) findViewById(R.id.activity_pair_pairButton);
-        this.demoButton = (BootstrapButton) findViewById(R.id.activity_pair_demoButton);
+        application = (VegaApplication) getApplicationContext();
+        urlTextEdit = (BootstrapEditText) findViewById(R.id.urlEditText);
+        pairButton = (BootstrapButton) findViewById(R.id.activity_pair_pairButton);
+        demoButton = (BootstrapButton) findViewById(R.id.activity_pair_demoButton);
     }
 
     @Override
