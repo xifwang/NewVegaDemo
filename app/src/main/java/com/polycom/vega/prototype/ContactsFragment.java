@@ -36,7 +36,7 @@ import java.util.Date;
 /**
  * Created by xwcheng on 9/11/2015.
  */
-public class ContactsFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
+public class ContactsFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener {
     private ListView contactListView;
     private FloatingActionButton addButton;
     private ArrayList<ContactObject> contacts;
@@ -122,11 +122,6 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         placeACall(contacts.get(position));
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

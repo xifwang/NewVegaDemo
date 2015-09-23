@@ -14,7 +14,7 @@ import com.polycom.vega.fundamental.VegaFragment;
 /**
  * Created by xwcheng on 9/21/2015.
  */
-public class FragmentChangePassword extends VegaFragment implements IActivity, Thread.UncaughtExceptionHandler {
+public class FragmentChangePassword extends VegaFragment implements IActivity {
 
     private EditText currentPasswordEditText;
     private EditText newPasswordEditText;
@@ -23,12 +23,12 @@ public class FragmentChangePassword extends VegaFragment implements IActivity, T
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         fragment = inflater.inflate(R.layout.fragment_changepassword, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -56,11 +56,6 @@ public class FragmentChangePassword extends VegaFragment implements IActivity, T
 
     @Override
     public void registerNotification() {
-
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
 
     }
 }

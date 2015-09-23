@@ -19,7 +19,7 @@ import com.polycom.vega.fundamental.VegaFragment;
 /**
  * Created by xwcheng on 8/21/2015.
  */
-public class PlaceACallFragment extends VegaFragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind {
+public class PlaceACallFragment extends VegaFragment implements IActivity, IDataBind {
     private View bottomBar;
     private VegaApplication application;
     private RadioGroup bottomBarRadioGroup;
@@ -27,12 +27,12 @@ public class PlaceACallFragment extends VegaFragment implements Thread.UncaughtE
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         fragment = inflater.inflate(R.layout.fragment_placeacall, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -146,9 +146,4 @@ public class PlaceACallFragment extends VegaFragment implements Thread.UncaughtE
 //    public boolean onContextItemSelected(MenuItem item) {
 //        return super.onContextItemSelected(item);
 //    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-
-    }
 }

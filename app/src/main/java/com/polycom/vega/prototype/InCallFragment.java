@@ -30,7 +30,7 @@ import java.util.TimerTask;
 /**
  * Created by xwcheng on 9/15/2015.
  */
-public class InCallFragment extends VegaFragment implements IActivity, Thread.UncaughtExceptionHandler, IDataBind {
+public class InCallFragment extends VegaFragment implements IActivity, IDataBind {
     private TextView consumingTimeTextView;
     private TextView usernameTextView;
     private CallingInformationObject callingInfo;
@@ -38,12 +38,12 @@ public class InCallFragment extends VegaFragment implements IActivity, Thread.Un
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         fragment = inflater.inflate(R.layout.fragment_incall, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -132,11 +132,6 @@ public class InCallFragment extends VegaFragment implements IActivity, Thread.Un
                 Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     private void endCall() {
