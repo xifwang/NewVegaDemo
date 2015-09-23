@@ -1,14 +1,11 @@
 package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,28 +20,16 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaApplication;
-import com.polycom.vega.localstorage.LocalStorageHelper;
 import com.polycom.vega.restobject.SystemObject;
+
+import java.net.CookieHandler;
+import java.net.CookieManager;
 
 public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
     private BootstrapEditText urlTextEdit = null;
     private BootstrapButton pairButton = null;
     private BootstrapButton demoButton = null;
     private VegaApplication application;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pair);
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
-
-        getSupportActionBar().hide();
-
-        initComponent();
-        initComponentState();
-    }
-
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             if (TextUtils.isEmpty(urlTextEdit.getText().toString())) {
@@ -54,7 +39,6 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
             pair();
         }
     };
-
     private View.OnClickListener demoButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(PairActivity.this);
@@ -73,6 +57,19 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         }
     };
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pair);
+
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
+        getSupportActionBar().hide();
+
+        initComponent();
+        initComponentState();
+    }
+
     private void pair() {
         String url = urlTextEdit.getText().toString();
 
@@ -89,6 +86,9 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         } catch (Exception ex) {
             Toast.makeText(PairActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        CookieManager cookieManager = new CookieManager();
+        CookieHandler.setDefault(cookieManager);
 
         final String finalUrl = url;
         StringRequest request = new StringRequest(url + "/rest/system", new Response.Listener<String>() {
