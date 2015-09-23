@@ -29,7 +29,7 @@ import java.util.ArrayList;
 /**
  * Created by Michael on 9/10/2015.
  */
-public class RecentCallFragment extends VegaFragment implements Thread.UncaughtExceptionHandler, IActivity, IDataBind, AdapterView.OnItemClickListener {
+public class RecentCallFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener {
     private int conferenceIndex;
     private ListView listView;
     private ArrayList<String> calls;
@@ -38,12 +38,12 @@ public class RecentCallFragment extends VegaFragment implements Thread.UncaughtE
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         fragment = inflater.inflate(R.layout.fragment_recentcall, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -76,11 +76,6 @@ public class RecentCallFragment extends VegaFragment implements Thread.UncaughtE
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         placeACall(calls.get(position));
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(fragment.getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

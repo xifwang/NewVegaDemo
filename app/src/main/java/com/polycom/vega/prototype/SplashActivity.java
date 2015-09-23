@@ -1,29 +1,40 @@
 package com.polycom.vega.prototype;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
 import com.polycom.vega.fundamental.IActivity;
+import com.polycom.vega.fundamental.VegaActivity;
+import com.polycom.vega.localstorage.LocalStorageHelper;
 
-public class SplashActivity extends AppCompatActivity implements IActivity {
+import java.util.Locale;
+
+public class SplashActivity extends VegaActivity implements IActivity {
     private TextView appNameTextView;
     private TextView copyrightTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         getSupportActionBar().hide();
 
-        this.initComponent();
-        this.initAnimation();
+        initUILanguage();
+        initComponent();
+        initAnimation();
 
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
@@ -74,6 +85,23 @@ public class SplashActivity extends AppCompatActivity implements IActivity {
 
         this.appNameTextView.setAnimation(alphaAnimation);
         this.copyrightTextView.setAnimation(alphaAnimation);
+    }
+
+    private void initUILanguage() {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Context context = getApplicationContext();
+        String language = LocalStorageHelper.getInstance().getLanguage(getApplicationContext());
+
+        if (TextUtils.isEmpty(language) && configuration.locale != null) {
+            LocalStorageHelper.getInstance().saveLanguage(context, configuration.locale.toString());
+        } else if (!TextUtils.equals(configuration.locale.toString(), language)) {
+            configuration.locale = new Locale(language);
+            resources.updateConfiguration(configuration, displayMetrics);
+            finish();
+            startActivity(this.getIntent());
+        }
     }
 
     @Override

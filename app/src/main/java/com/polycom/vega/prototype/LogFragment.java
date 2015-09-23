@@ -17,7 +17,7 @@ import com.polycom.vega.fundamental.VegaFragment;
 /**
  * Created by zerocool on 9/22/15.
  */
-public class LogFragment extends VegaFragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
+public class LogFragment extends VegaFragment implements IActivity, IDataBind {
 
     private TextView logTextView;
     private View bottomBar;
@@ -25,6 +25,8 @@ public class LogFragment extends VegaFragment implements IActivity, IDataBind, T
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         fragment = inflater.inflate(R.layout.fragment_log, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
@@ -81,10 +83,5 @@ public class LogFragment extends VegaFragment implements IActivity, IDataBind, T
     @Override
     public void dataBind() {
 
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

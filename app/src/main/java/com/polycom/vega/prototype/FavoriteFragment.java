@@ -30,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Created by xwcheng on 9/11/2015.
  */
-public class FavoriteFragment extends VegaFragment implements IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler, IActivity {
+public class FavoriteFragment extends VegaFragment implements IDataBind, AdapterView.OnItemClickListener, IActivity {
     private int conferenceIndex;
     private GridView favoriteGridView;
     private ArrayList<ContactObject> favorites;
@@ -39,12 +39,12 @@ public class FavoriteFragment extends VegaFragment implements IDataBind, Adapter
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         fragment = inflater.inflate(R.layout.fragment_favorite, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -89,11 +89,6 @@ public class FavoriteFragment extends VegaFragment implements IDataBind, Adapter
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         placeACall(favorites.get(position).getDestinationIp());
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     private void placeACall(final String destinationIp) {

@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FragmentAdministration extends VegaFragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
+public class FragmentAdministration extends VegaFragment implements IActivity, IDataBind {
     private Spinner languageListSpinner;
     private ArrayAdapter languageListAdapter;
     private BootstrapButton changePasswordBootstrapButton;
@@ -41,13 +41,13 @@ public class FragmentAdministration extends VegaFragment implements IActivity, I
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         // Inflate the layout for this fragment
         fragment = inflater.inflate(R.layout.fragment_administration, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -154,7 +154,7 @@ public class FragmentAdministration extends VegaFragment implements IActivity, I
         String language = LocalStorageHelper.getInstance().getLanguage(context);
 
         if (TextUtils.isEmpty(language)) {
-            language = "en";    // Description: English is current default UI language.
+            language = getResources().getConfiguration().locale.toString();
 
             try {
                 LocalStorageHelper.getInstance().saveLanguage(context, language);
@@ -184,10 +184,5 @@ public class FragmentAdministration extends VegaFragment implements IActivity, I
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -7,10 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,13 +22,14 @@ import com.android.volley.toolbox.Volley;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
+import com.polycom.vega.fundamental.VegaActivity;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.localstorage.LocalStorageHelper;
 import com.polycom.vega.restobject.SystemObject;
 
 import java.util.Locale;
 
-public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
+public class PairActivity extends VegaActivity implements IActivity {
     private BootstrapEditText urlTextEdit = null;
     private BootstrapButton pairButton = null;
     private BootstrapButton demoButton = null;
@@ -39,10 +37,10 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pair);
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         getSupportActionBar().hide();
 
@@ -182,10 +180,5 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
     @Override
     public void registerNotification() {
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
