@@ -47,10 +47,10 @@ public class SettingsFragment extends VegaFragment implements IActivity, IDataBi
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        this.initComponent();
-        this.initComponentState();
-        this.registerNotification();
-        this.dataBind();
+        initComponent();
+        initComponentState();
+        registerNotification();
+        dataBind();
 
         return fragment;
     }

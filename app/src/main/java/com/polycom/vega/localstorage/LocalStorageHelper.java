@@ -2,6 +2,7 @@ package com.polycom.vega.localstorage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import java.io.IOException;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
  */
 public class LocalStorageHelper {
     private static String storageName = "com.polycom.vega";
+    private static String languageKey = "language";
 
     private static LocalStorageHelper instance;
 
@@ -20,9 +22,27 @@ public class LocalStorageHelper {
     private LocalStorageHelper() {
     }
 
-    public String get(Context context, String key) throws Exception {
+    public String getLanguage(Context context) throws IllegalArgumentException {
         if (context == null) {
-            throw new Exception("Context is null.");
+            throw new IllegalArgumentException("Context is null.");
+        }
+
+        return get(context, languageKey);
+    }
+
+    public void saveLanguage(Context context, String language) throws IllegalArgumentException {
+        if (context == null) {
+            throw new IllegalArgumentException("Context is null.");
+        } else if (TextUtils.isEmpty(language)) {
+            throw new IllegalArgumentException("Language name is empty.");
+        }
+
+        save(context, languageKey, language);
+    }
+
+    public String get(Context context, String key) throws IllegalArgumentException {
+        if (context == null) {
+            throw new IllegalArgumentException("Context is null.");
         }
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(storageName, Context.MODE_PRIVATE);
@@ -30,9 +50,9 @@ public class LocalStorageHelper {
         return (sharedPreferences == null ? null : sharedPreferences.getString(key, null));
     }
 
-    public void save(Context context, String key, String value) throws Exception {
+    public void save(Context context, String key, String value) throws IllegalArgumentException {
         if (context == null) {
-            throw new Exception("Context is null.");
+            throw new IllegalArgumentException("Context is null.");
         }
 
         try {

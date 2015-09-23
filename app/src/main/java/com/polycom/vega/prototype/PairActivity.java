@@ -1,11 +1,14 @@
 package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,17 +22,33 @@ import com.android.volley.toolbox.Volley;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.IActivity;
+import com.polycom.vega.fundamental.VegaActivity;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.localstorage.LocalStorageHelper;
 import com.polycom.vega.restobject.SystemObject;
 
-import java.net.CookieHandler;
-import java.net.CookieManager;
+import java.util.Locale;
 
-public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
+public class PairActivity extends VegaActivity implements IActivity {
     private BootstrapEditText urlTextEdit = null;
     private BootstrapButton pairButton = null;
     private BootstrapButton demoButton = null;
     private VegaApplication application;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pair);
+
+        getSupportActionBar().hide();
+
+        initUILanguage();
+        initComponent();
+        initComponentState();
+    }
+
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             if (TextUtils.isEmpty(urlTextEdit.getText().toString())) {
@@ -39,6 +58,7 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
             pair();
         }
     };
+
     private View.OnClickListener demoButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(PairActivity.this);
@@ -56,19 +76,6 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
             dialog.show();
         }
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pair);
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
-
-        getSupportActionBar().hide();
-
-        initComponent();
-        initComponentState();
-    }
 
     private void pair() {
         String url = urlTextEdit.getText().toString();
@@ -140,6 +147,21 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         return super.onOptionsItemSelected(item);
     }
 
+    private void initUILanguage() {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Context context = getApplicationContext();
+        String language = LocalStorageHelper.getInstance().getLanguage(getApplicationContext());
+
+        if (!TextUtils.equals(configuration.locale.toString(), language)) {
+            configuration.locale = new Locale(language);
+            resources.updateConfiguration(configuration, displayMetrics);
+            this.finish();
+            this.startActivity(this.getIntent());
+        }
+    }
+
     @Override
     public void initComponent() {
         application = (VegaApplication) getApplicationContext();
@@ -161,10 +183,5 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
 
     @Override
     public void registerNotification() {
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

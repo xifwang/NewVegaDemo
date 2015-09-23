@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +32,7 @@ import java.util.ArrayList;
 /**
  * Created by xwcheng on 9/9/2015.
  */
-public class KeypadFragment extends VegaFragment implements IActivity, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
+public class KeypadFragment extends VegaFragment implements IActivity, AdapterView.OnItemClickListener {
     private int conferenceIndex;
     private ArrayList<String> keyList;
     private KeypadAdapter keypadAdapter;
@@ -43,12 +42,12 @@ public class KeypadFragment extends VegaFragment implements IActivity, AdapterVi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         application = (VegaApplication) getActivity().getApplication();
-        fragment = (LinearLayout) inflater.inflate(R.layout.fragment_keypad, container, false);
+        fragment = inflater.inflate(R.layout.fragment_keypad, container, false);
         context = fragment.getContext();
         fragmentManager = getActivity().getSupportFragmentManager();
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -154,11 +153,6 @@ public class KeypadFragment extends VegaFragment implements IActivity, AdapterVi
 
     @Override
     public void registerNotification() {
-
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
 
     }
 
