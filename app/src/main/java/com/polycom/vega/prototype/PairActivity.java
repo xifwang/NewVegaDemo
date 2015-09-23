@@ -27,6 +27,8 @@ import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.localstorage.LocalStorageHelper;
 import com.polycom.vega.restobject.SystemObject;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.util.Locale;
 
 public class PairActivity extends VegaActivity implements IActivity {
@@ -34,21 +36,6 @@ public class PairActivity extends VegaActivity implements IActivity {
     private BootstrapButton pairButton = null;
     private BootstrapButton demoButton = null;
     private VegaApplication application;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Thread.currentThread().setUncaughtExceptionHandler(this);
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pair);
-
-        getSupportActionBar().hide();
-
-        initUILanguage();
-        initComponent();
-        initComponentState();
-    }
-
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             if (TextUtils.isEmpty(urlTextEdit.getText().toString())) {
@@ -58,7 +45,6 @@ public class PairActivity extends VegaActivity implements IActivity {
             pair();
         }
     };
-
     private View.OnClickListener demoButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(PairActivity.this);
@@ -76,6 +62,20 @@ public class PairActivity extends VegaActivity implements IActivity {
             dialog.show();
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pair);
+
+        getSupportActionBar().hide();
+
+        initUILanguage();
+        initComponent();
+        initComponentState();
+    }
 
     private void pair() {
         String url = urlTextEdit.getText().toString();

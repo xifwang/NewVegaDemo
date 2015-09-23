@@ -34,6 +34,18 @@ public class InCallFragment extends VegaFragment implements IActivity, IDataBind
     private TextView consumingTimeTextView;
     private TextView usernameTextView;
     private CallingInformationObject callingInfo;
+    private View.OnClickListener endCallImageButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            endCall();
+        }
+    };
+    private View.OnClickListener backImageButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
+    };
 
     @Nullable
     @Override
@@ -68,20 +80,6 @@ public class InCallFragment extends VegaFragment implements IActivity, IDataBind
         ImageButton endCallImageButton = (ImageButton) fragment.findViewById(R.id.fragment_incall_endCallImageButton);
         endCallImageButton.setOnClickListener(endCallImageButton_OnClickListener);
     }
-
-    private View.OnClickListener endCallImageButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            endCall();
-        }
-    };
-
-    private View.OnClickListener backImageButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            getActivity().getSupportFragmentManager().popBackStack();
-        }
-    };
 
     public void initComponentState() {
     }

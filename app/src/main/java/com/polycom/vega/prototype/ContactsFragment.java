@@ -42,6 +42,34 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
     private ArrayList<ContactObject> contacts;
     private ArrayAdapter<ContactObject> contactAdapter;
     private int conferenceIndex;
+    private View.OnClickListener addButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+            final View contentView = View.inflate(context, R.layout.fragment_addcontact_dialog_content, null);
+            contentView.setPadding(16, 16, 16, 16);
+            dialogBuilder.setView(contentView);
+            dialogBuilder.setTitle(R.string.add_contact_dialog_title);
+            dialogBuilder.setIcon(R.drawable.icon_default_user_avatar);
+            dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String displayName = ((EditText) contentView.findViewById(R.id.fragment_addcontact_dialog_content_displayNameEditText)).getText().toString().trim();
+                    String destinationIp = ((EditText) contentView.findViewById(R.id.fragment_addcontact_dialog_content_destinationIpEditText)).getText().toString().trim();
+
+                    contacts.add(new ContactObject(displayName, destinationIp));
+                    contactAdapter.notifyDataSetChanged();
+                }
+            });
+            dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialogBuilder.show();
+        }
+    };
 
     @Nullable
     @Override
@@ -75,35 +103,6 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
         addButton.attachToListView(contactListView);
         addButton.setOnClickListener(addButton_OnClickListener);
     }
-
-    private View.OnClickListener addButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-            final View contentView = View.inflate(context, R.layout.fragment_addcontact_dialog_content, null);
-            contentView.setPadding(16, 16, 16, 16);
-            dialogBuilder.setView(contentView);
-            dialogBuilder.setTitle(R.string.add_contact_dialog_title);
-            dialogBuilder.setIcon(R.drawable.icon_default_user_avatar);
-            dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String displayName = ((EditText) contentView.findViewById(R.id.fragment_addcontact_dialog_content_displayNameEditText)).getText().toString().trim();
-                    String destinationIp = ((EditText) contentView.findViewById(R.id.fragment_addcontact_dialog_content_destinationIpEditText)).getText().toString().trim();
-
-                    contacts.add(new ContactObject(displayName, destinationIp));
-                    contactAdapter.notifyDataSetChanged();
-                }
-            });
-            dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            dialogBuilder.show();
-        }
-    };
 
     public void initComponentState() {
 

@@ -23,6 +23,40 @@ public class PlaceACallFragment extends VegaFragment implements IActivity, IData
     private View bottomBar;
     private VegaApplication application;
     private RadioGroup bottomBarRadioGroup;
+    private View.OnClickListener backHeaderButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
+    };
+    private View.OnClickListener optionsHeaderButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+//            fragment.showContextMenu();
+        }
+    };
+
+//    private View.OnClickListener recentCallsImageButton_OnClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
+//            builder.setIcon(R.drawable.icon_recentcalls);
+//            builder.setTitle(getString(R.string.option_item_recentCalls_title));
+//
+//            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(fragment.getContext(), android.R.layout.simple_selectable_list_item);
+//            arrayAdapter.add("172.21.97.215");
+//            arrayAdapter.add("172.21.97.190");
+//            arrayAdapter.add("172.21.97.157");
+//
+//            builder.setAdapter(arrayAdapter,
+//                    new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                        }
+//                    });
+//            builder.show();
+//        }
+//    };
 
     @Nullable
     @Override
@@ -70,42 +104,6 @@ public class PlaceACallFragment extends VegaFragment implements IActivity, IData
             }
         });
     }
-
-//    private View.OnClickListener recentCallsImageButton_OnClickListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
-//            builder.setIcon(R.drawable.icon_recentcalls);
-//            builder.setTitle(getString(R.string.option_item_recentCalls_title));
-//
-//            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(fragment.getContext(), android.R.layout.simple_selectable_list_item);
-//            arrayAdapter.add("172.21.97.215");
-//            arrayAdapter.add("172.21.97.190");
-//            arrayAdapter.add("172.21.97.157");
-//
-//            builder.setAdapter(arrayAdapter,
-//                    new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                        }
-//                    });
-//            builder.show();
-//        }
-//    };
-
-    private View.OnClickListener backHeaderButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            getActivity().getSupportFragmentManager().popBackStack();
-        }
-    };
-
-    private View.OnClickListener optionsHeaderButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-//            fragment.showContextMenu();
-        }
-    };
 
     @Override
     public void initComponentState() {

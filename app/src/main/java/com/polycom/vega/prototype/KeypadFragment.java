@@ -33,11 +33,11 @@ import java.util.ArrayList;
  * Created by xwcheng on 9/9/2015.
  */
 public class KeypadFragment extends VegaFragment implements IActivity, AdapterView.OnItemClickListener {
+    TextView numberTextView;
     private int conferenceIndex;
     private ArrayList<String> keyList;
     private KeypadAdapter keypadAdapter;
     private GridView keypadGridView;
-    TextView numberTextView;
 
     @Nullable
     @Override
