@@ -22,10 +22,10 @@ import com.android.volley.toolbox.Volley;
 import com.melnykov.fab.FloatingActionButton;
 import com.polycom.vega.fundamental.CallingInformationObject;
 import com.polycom.vega.fundamental.ContactObject;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ import java.util.Date;
 /**
  * Created by xwcheng on 9/11/2015.
  */
-public class ContactsFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener {
+public class ContactsFragment extends VegaFragment implements IView, IDataBind, AdapterView.OnItemClickListener {
     private ListView contactListView;
     private FloatingActionButton addButton;
     private ArrayList<ContactObject> contacts;
@@ -137,7 +137,7 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
     }
 
     private void placeACall(final ContactObject contact) {
-        final String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences?_dc=1439978043968";
+        final String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
         final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
         dialog.setMessage(getString(R.string.message_placeACall));
 
@@ -155,7 +155,7 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     dialog.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
 
                     CallingInformationObject callingInfo = new CallingInformationObject();
                     try {
@@ -184,7 +184,7 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
 
             JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
 
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
+            Volley.newRequestQueue(context).add(jsonArrayRequest);
         } catch (JSONException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }

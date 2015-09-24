@@ -20,9 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 /**
  * Created by xwcheng on 9/9/2015.
  */
-public class KeypadFragment extends VegaFragment implements IActivity, AdapterView.OnItemClickListener {
+public class KeypadFragment extends VegaFragment implements IView, AdapterView.OnItemClickListener {
     TextView numberTextView;
     private int conferenceIndex;
     private ArrayList<String> keyList;
@@ -159,7 +159,7 @@ public class KeypadFragment extends VegaFragment implements IActivity, AdapterVi
     private void placeACall() {
         String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
         final String destinationIp = "172.21.97.215";
-        final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
+        final ProgressDialog dialog = new ProgressDialog(context);
         dialog.setMessage(getString(R.string.message_placeACall));
 
         try {
@@ -176,13 +176,12 @@ public class KeypadFragment extends VegaFragment implements IActivity, AdapterVi
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     dialog.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
 
                     // TODO: Need to improve.
                     conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(fragment.getContext
-                            ());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                     alertDialogBuilder.setMessage("In call with " + destinationIp);
                     alertDialogBuilder.setCancelable(false);
                     alertDialogBuilder.setPositiveButton(getString(R.string.button_endCall_text), new DialogInterface.OnClickListener() {
@@ -199,7 +198,7 @@ public class KeypadFragment extends VegaFragment implements IActivity, AdapterVi
 
             JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
 
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
+            Volley.newRequestQueue(context).add(jsonArrayRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -226,7 +225,7 @@ public class KeypadFragment extends VegaFragment implements IActivity, AdapterVi
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
 
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
+            Volley.newRequestQueue(context).add(jsonObjectRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }

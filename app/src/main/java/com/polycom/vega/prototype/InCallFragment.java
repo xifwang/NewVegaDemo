@@ -15,10 +15,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.CallingInformationObject;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +30,7 @@ import java.util.TimerTask;
 /**
  * Created by xwcheng on 9/15/2015.
  */
-public class InCallFragment extends VegaFragment implements IActivity, IDataBind {
+public class InCallFragment extends VegaFragment implements IView, IDataBind {
     private TextView consumingTimeTextView;
     private TextView usernameTextView;
     private CallingInformationObject callingInfo;
@@ -157,7 +157,7 @@ public class InCallFragment extends VegaFragment implements IActivity, IDataBind
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
 
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
+            Volley.newRequestQueue(context).add(jsonObjectRequest);
         } catch (JSONException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }

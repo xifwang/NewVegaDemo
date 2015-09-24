@@ -1,9 +1,9 @@
-package com.polycom.vega.fundamental;
+package com.polycom.vega.interfaces;
 
 /**
  * Created by xwcheng on 8/17/2015.
  */
-public interface IActivity {
+public interface IView {
     void initComponent();
     void initComponentState();
     void initAnimation();

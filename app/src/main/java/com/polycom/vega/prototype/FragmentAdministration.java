@@ -18,10 +18,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 import com.polycom.vega.localstorage.LocalStorageHelper;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FragmentAdministration extends VegaFragment implements IActivity, IDataBind {
+public class FragmentAdministration extends VegaFragment implements IView, IDataBind {
     private Spinner languageListSpinner;
     private ArrayAdapter languageListAdapter;
     private BootstrapButton changePasswordBootstrapButton;

@@ -17,10 +17,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.ContactObject;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Created by xwcheng on 9/11/2015.
  */
-public class FavoriteFragment extends VegaFragment implements IDataBind, AdapterView.OnItemClickListener, IActivity {
+public class FavoriteFragment extends VegaFragment implements IDataBind, AdapterView.OnItemClickListener, IView {
     private int conferenceIndex;
     private GridView favoriteGridView;
     private ArrayList<ContactObject> favorites;
@@ -92,7 +92,7 @@ public class FavoriteFragment extends VegaFragment implements IDataBind, Adapter
     }
 
     private void placeACall(final String destinationIp) {
-        String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences?_dc=1439978043968";
+        String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
         final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
         dialog.setMessage(getString(R.string.message_placeACall));
 
@@ -110,7 +110,7 @@ public class FavoriteFragment extends VegaFragment implements IDataBind, Adapter
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     dialog.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
 
                     // TODO: Need to improve.
                     conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
@@ -133,14 +133,14 @@ public class FavoriteFragment extends VegaFragment implements IDataBind, Adapter
 
             JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
 
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
+            Volley.newRequestQueue(context).add(jsonArrayRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     private void endCall() {
-        String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
+        String url = application.getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
 
         try {
             JSONObject json = new JSONObject("{\"action\":\"hangup\"}");
@@ -160,7 +160,7 @@ public class FavoriteFragment extends VegaFragment implements IDataBind, Adapter
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
 
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
+            Volley.newRequestQueue(context).add(jsonObjectRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }

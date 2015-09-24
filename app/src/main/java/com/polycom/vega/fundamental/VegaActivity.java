@@ -9,7 +9,7 @@ import android.widget.Toast;
 public class VegaActivity extends AppCompatActivity implements Thread.UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         ex.printStackTrace();
     }
 }

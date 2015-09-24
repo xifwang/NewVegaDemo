@@ -15,21 +15,51 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 /**
  * Created by xifwang on 9/16/2015.
  */
-public class LocalGsControlFragment extends VegaFragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
+public class LocalGsControlFragment extends VegaFragment implements IView, IDataBind, Thread.UncaughtExceptionHandler {
     private Button muteButton;
     private Button cameraButton;
     private SeekBar volSeekBar;
     private boolean isEndpointMuted;
     private boolean isCameraOff;
     private int progressVolume;
+    private View.OnClickListener muteButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            muteAudio();
+        }
+    };
+    private View.OnClickListener careraButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            disableCamera();
+        }
+    };
+    private SeekBar.OnSeekBarChangeListener volume_ChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            updateVolumeSeekBar(progress);
+
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+
+    };
 
     @Nullable
 
@@ -68,39 +98,6 @@ public class LocalGsControlFragment extends VegaFragment implements IActivity, I
         volSeekBar = (SeekBar) fragment.findViewById(R.id.fragment_local_gs_control_volumebutton);
         volSeekBar.setOnSeekBarChangeListener(volume_ChangeListener);
     }
-
-    private View.OnClickListener muteButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            muteAudio();
-        }
-    };
-
-    private View.OnClickListener careraButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            disableCamera();
-        }
-    };
-
-    private SeekBar.OnSeekBarChangeListener volume_ChangeListener = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            updateVolumeSeekBar(progress);
-
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-
-        }
-
-    };
 
     @Override
     public void initComponentState() {

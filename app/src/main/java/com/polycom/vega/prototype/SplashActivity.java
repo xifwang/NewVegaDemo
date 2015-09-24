@@ -13,13 +13,13 @@ import android.view.MenuItem;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
-import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaActivity;
+import com.polycom.vega.interfaces.IView;
 import com.polycom.vega.localstorage.LocalStorageHelper;
 
 import java.util.Locale;
 
-public class SplashActivity extends VegaActivity implements IActivity {
+public class SplashActivity extends VegaActivity implements IView {
     private TextView appNameTextView;
     private TextView copyrightTextView;
 

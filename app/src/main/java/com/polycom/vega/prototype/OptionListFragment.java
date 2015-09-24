@@ -8,18 +8,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.OptionObject;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class OptionListFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener {
+public class OptionListFragment extends VegaFragment implements IView, IDataBind, AdapterView.OnItemClickListener {
     private ArrayList<OptionObject> optionList;
     private OptionAdapter optionAdapter;
     private GridView optionListView;
@@ -28,8 +28,8 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Thread.currentThread().setUncaughtExceptionHandler(this);
 
-        context = getActivity().getApplicationContext();
         fragment = inflater.inflate(R.layout.fragment_optionlist, container, false);
+        context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
 
@@ -53,7 +53,6 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
         } else if (position == 4) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new LocalGsControlFragment()).commit();
         }
-
     }
 
     @Override

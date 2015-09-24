@@ -9,15 +9,15 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 /**
  * Created by zerocool on 9/22/15.
  */
-public class LogFragment extends VegaFragment implements IActivity, IDataBind {
+public class LogFragment extends VegaFragment implements IView, IDataBind {
 
     private TextView logTextView;
     private View bottomBar;
