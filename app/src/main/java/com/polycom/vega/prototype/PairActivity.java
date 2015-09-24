@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.alibaba.fastjson.JSON;
+import com.android.volley.VolleyError;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.polycom.vega.fundamental.VegaActivity;
@@ -143,5 +144,10 @@ public class PairActivity extends VegaActivity implements IView, PairLitenser {
         intent.putExtra("response", response);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onPairError(VolleyError error) {
+
     }
 }
