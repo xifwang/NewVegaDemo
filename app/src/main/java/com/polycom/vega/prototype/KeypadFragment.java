@@ -1,12 +1,9 @@
 package com.polycom.vega.prototype;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.polycom.vega.fundamental.CallingInformationObject;
+import com.polycom.vega.fundamental.ContactObject;
 import com.polycom.vega.fundamental.ExceptionHandler;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
@@ -28,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by xwcheng on 9/9/2015.
@@ -38,7 +38,7 @@ public class KeypadFragment extends VegaFragment implements IView, AdapterView.O
     private ArrayList<String> keyList;
     private KeypadAdapter keypadAdapter;
     private GridView keypadGridView;
-    private ProgressDialog dialog;
+    private String destinationIp;
 
     @Nullable
     @Override
@@ -161,46 +161,47 @@ public class KeypadFragment extends VegaFragment implements IView, AdapterView.O
     }
 
     private void placeACall() throws Exception {
-        String destinationIp = (!TextUtils.isEmpty(numberTextView.getText().toString()) ? numberTextView.getText().toString() : "172.21.97.208");
+        destinationIp = (!TextUtils.isEmpty(numberTextView.getText().toString()) ? numberTextView.getText().toString() : "172.21.97.208");
         JSONObject json = new JSONObject("{\"address\":\"" + destinationIp + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
         RestHelper.getInstance().PlaceACall(context, json);
         RestHelper.getInstance().setPlaceACallListener(this);
-
-        dialog = new ProgressDialog(context);
-        dialog.setMessage(getString(R.string.message_placeACall));
     }
 
     @Override
     public void onCallPlaced(JSONObject response) {
-        if (dialog != null) {
-            dialog.dismiss();
-        }
     }
 
     @Override
     public void onPlaceACallError(VolleyError error) {
-        dialog.dismiss();
         Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
 
         // TODO: Need to improve.
         conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setMessage("In call ...");
-        alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setPositiveButton(getString(R.string.button_endCall_text), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try {
-                    RestHelper.getInstance().EndCall(context, conferenceIndex);
-                } catch (Exception e) {
-                    ExceptionHandler.getInstance().handle(context, e);
-                }
+        CallingInformationObject callingInfo = new CallingInformationObject();
 
-                dialog.dismiss();
-            }
-        });
-        alertDialogBuilder.show();
+        try {
+            // TODO: Need to improve.
+            conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
+
+            ContactObject contact = new ContactObject(destinationIp, destinationIp);
+
+            callingInfo.setContact(contact);
+            callingInfo.setConferenceIndex(conferenceIndex);
+            callingInfo.setStartTime(new Date());
+        } catch (Exception ex) {
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("callingInfo", callingInfo);
+
+        InCallFragment inCallFragment = new InCallFragment();
+        inCallFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, inCallFragment).commit();
     }
 
     @Override

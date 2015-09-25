@@ -165,7 +165,7 @@ public class ContactsFragment extends VegaFragment implements IView, IDataBind, 
                         callingInfo.setConferenceIndex(conferenceIndex);
                         callingInfo.setContact(contact);
                         callingInfo.setStartTime(new Date());
-                        callingInfo.setDestinationFullUrl(url);
+//                        callingInfo.setDestinationFullUrl(url);
                     } catch (Exception ex) {
                         Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
 
