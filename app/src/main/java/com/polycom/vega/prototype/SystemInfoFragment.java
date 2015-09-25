@@ -9,15 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 import com.polycom.vega.restobject.SystemObject;
 
 /**
  * Created by chengw on 9/14/2015.
  */
-public class SystemInfoFragment extends VegaFragment implements IActivity, IDataBind {
+public class SystemInfoFragment extends VegaFragment implements IView, IDataBind {
     private TextView gsName_textView = null;
     private TextView gsModel_textView = null;
     private TextView gsSwVersion_textView = null;

@@ -1,7 +1,6 @@
 package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,50 +14,34 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
-import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaActivity;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.interfaces.IView;
+import com.polycom.vega.interfaces.PairLitenser;
 import com.polycom.vega.localstorage.LocalStorageHelper;
+import com.polycom.vega.resthelper.RestHelper;
 import com.polycom.vega.restobject.SystemObject;
 
 import java.util.Locale;
 
-public class PairActivity extends VegaActivity implements IActivity {
+public class PairActivity extends VegaActivity implements IView, PairLitenser {
     private BootstrapEditText urlTextEdit = null;
     private BootstrapButton pairButton = null;
     private BootstrapButton demoButton = null;
     private VegaApplication application;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Thread.currentThread().setUncaughtExceptionHandler(this);
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pair);
-
-        getSupportActionBar().hide();
-
-        initUILanguage();
-        initComponent();
-        initComponentState();
-    }
-
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             if (TextUtils.isEmpty(urlTextEdit.getText().toString())) {
                 return;
             }
 
-            pair();
+            RestHelper.getInstance().setPairLitenser(PairActivity.this);
+            RestHelper.getInstance().Pair(PairActivity.this, urlTextEdit.getText().toString());
         }
     };
-
     private View.OnClickListener demoButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(PairActivity.this);
@@ -77,43 +60,18 @@ public class PairActivity extends VegaActivity implements IActivity {
         }
     };
 
-    private void pair() {
-        String url = urlTextEdit.getText().toString();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
 
-        if (TextUtils.isEmpty(url)) {
-            return;
-        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pair);
 
-        if (!url.startsWith("https://")) {
-            url = "https://" + url;
-        }
+        getSupportActionBar().hide();
 
-        try {
-            HttpsTrustHelper.allowAllSSL();
-        } catch (Exception ex) {
-            Toast.makeText(PairActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        final String finalUrl = url;
-        StringRequest request = new StringRequest(url + "/rest/system", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-//                parseData(response);
-                application.setServerUrl(finalUrl);
-
-                Intent intent = new Intent(PairActivity.this, MainActivity.class);
-                intent.putExtra("response", response);
-
-                startActivity(intent);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), (error.networkResponse != null ? error.networkResponse.statusCode + "" : error.getMessage()), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        Volley.newRequestQueue(getApplicationContext()).add(request);
+        initUILanguage();
+        initComponent();
+        initComponentState();
     }
 
     private void parseData(String response) {
@@ -148,7 +106,6 @@ public class PairActivity extends VegaActivity implements IActivity {
         Resources resources = getResources();
         Configuration configuration = resources.getConfiguration();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
-        Context context = getApplicationContext();
         String language = LocalStorageHelper.getInstance().getLanguage(getApplicationContext());
 
         if (!TextUtils.equals(configuration.locale.toString(), language)) {
@@ -180,5 +137,18 @@ public class PairActivity extends VegaActivity implements IActivity {
 
     @Override
     public void registerNotification() {
+    }
+
+    @Override
+    public void onPaired(String response) {
+        Intent intent = new Intent(PairActivity.this, MainActivity.class);
+        intent.putExtra("response", response);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPairError(VolleyError error) {
+        Toast.makeText(PairActivity.this, (error.networkResponse != null ? error.networkResponse.statusCode + "" : error.getMessage()), Toast.LENGTH_LONG).show();
     }
 }

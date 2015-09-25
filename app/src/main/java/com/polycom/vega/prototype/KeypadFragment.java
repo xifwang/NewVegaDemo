@@ -1,9 +1,6 @@
 package com.polycom.vega.prototype;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,28 +13,32 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.polycom.vega.fundamental.IActivity;
+import com.polycom.vega.fundamental.CallingInformationObject;
+import com.polycom.vega.fundamental.ContactObject;
+import com.polycom.vega.fundamental.ExceptionHandler;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IView;
+import com.polycom.vega.interfaces.PlaceACallListener;
+import com.polycom.vega.resthelper.RestHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by xwcheng on 9/9/2015.
  */
-public class KeypadFragment extends VegaFragment implements IActivity, AdapterView.OnItemClickListener {
+public class KeypadFragment extends VegaFragment implements IView, AdapterView.OnItemClickListener, PlaceACallListener {
+    TextView numberTextView;
     private int conferenceIndex;
     private ArrayList<String> keyList;
     private KeypadAdapter keypadAdapter;
     private GridView keypadGridView;
-    TextView numberTextView;
+    private String destinationIp;
 
     @Nullable
     @Override
@@ -100,7 +101,13 @@ public class KeypadFragment extends VegaFragment implements IActivity, AdapterVi
                 numberTextView.setText(numberTextView.getText() + "#");
                 break;
             case 13:
-                placeACall();
+                try {
+                    placeACall();
+                } catch (JSONException e) {
+                    ExceptionHandler.getInstance().handle(context, e);
+                } catch (Exception e) {
+                    ExceptionHandler.getInstance().handle(context, e);
+                }
                 break;
             case 14:
                 String number = numberTextView.getText().toString();
@@ -143,92 +150,57 @@ public class KeypadFragment extends VegaFragment implements IActivity, AdapterVi
 
     @Override
     public void initComponentState() {
-
     }
 
     @Override
     public void initAnimation() {
-
     }
 
     @Override
     public void registerNotification() {
-
     }
 
-    private void placeACall() {
-        String url = application.getServerUrl() + "/rest/conferences?_dc=1439978043968";
-        final String destinationIp = "172.21.97.215";
-        final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
-        dialog.setMessage(getString(R.string.message_placeACall));
-
-        try {
-            dialog.show();
-
-            JSONObject json = new JSONObject("{\"address\":\"" + destinationIp + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
-            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    dialog.dismiss();
-                }
-            };
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    dialog.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    // TODO: Need to improve.
-                    conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(fragment.getContext
-                            ());
-                    alertDialogBuilder.setMessage("In call with " + destinationIp);
-                    alertDialogBuilder.setCancelable(false);
-                    alertDialogBuilder.setPositiveButton(getString(R.string.button_endCall_text), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            endCall();
-
-                            dialog.dismiss();
-                        }
-                    });
-                    alertDialogBuilder.show();
-                }
-            };
-
-            JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
-
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    private void placeACall() throws Exception {
+        destinationIp = (!TextUtils.isEmpty(numberTextView.getText().toString()) ? numberTextView.getText().toString() : "172.21.97.208");
+        JSONObject json = new JSONObject("{\"address\":\"" + destinationIp + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
+        RestHelper.getInstance().PlaceACall(context, json);
+        RestHelper.getInstance().setPlaceACallListener(this);
     }
 
-    private void endCall() {
-        String url = application.getServerUrl() + "/rest/conferences/0/connections/" + conferenceIndex;
+    @Override
+    public void onCallPlaced(JSONObject response) {
+    }
+
+    @Override
+    public void onPlaceACallError(VolleyError error) {
+        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+        // TODO: Need to improve.
+        conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
+
+        CallingInformationObject callingInfo = new CallingInformationObject();
 
         try {
-            JSONObject json = new JSONObject("{\"action\":\"hangup\"}");
-            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
+            // TODO: Need to improve.
+            conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
 
-                }
-            };
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-//                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), "Call has been ended.", Toast.LENGTH_SHORT).show();
-                }
-            };
+            ContactObject contact = new ContactObject(destinationIp, destinationIp);
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
+            callingInfo.setContact(contact);
+            callingInfo.setConferenceIndex(conferenceIndex);
+            callingInfo.setStartTime(new Date());
+        } catch (Exception ex) {
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
 
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            return;
         }
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("callingInfo", callingInfo);
+
+        InCallFragment inCallFragment = new InCallFragment();
+        inCallFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, inCallFragment).commit();
     }
 }

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import java.io.IOException;
-
 /**
  * Created by xwcheng on 9/7/2015.
  */
@@ -15,11 +13,11 @@ public class LocalStorageHelper {
 
     private static LocalStorageHelper instance;
 
-    public static LocalStorageHelper getInstance() {
-        return (instance == null ? instance = new LocalStorageHelper() : instance);
+    private LocalStorageHelper() {
     }
 
-    private LocalStorageHelper() {
+    public static LocalStorageHelper getInstance() {
+        return (instance == null ? instance = new LocalStorageHelper() : instance);
     }
 
     public String getLanguage(Context context) throws IllegalArgumentException {

@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.polycom.vega.fundamental.IActivity;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IView;
 
 /**
  * Created by xwcheng on 9/21/2015.
  */
-public class FragmentChangePassword extends VegaFragment implements IActivity {
+public class FragmentChangePassword extends VegaFragment implements IView {
 
     private EditText currentPasswordEditText;
     private EditText newPasswordEditText;

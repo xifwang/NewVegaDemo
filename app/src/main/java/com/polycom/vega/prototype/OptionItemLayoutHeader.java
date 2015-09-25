@@ -10,17 +10,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 /**
  * Created by zerocool on 8/24/15.
  */
-public class OptionItemLayoutHeader extends Fragment implements IActivity, IDataBind {
+public class OptionItemLayoutHeader extends Fragment implements IView, IDataBind {
     private LinearLayout header;
     private ImageView backImageView;
     private TextView titleTextView;
     private ImageView optionsImageView;
+
+    public OptionItemLayoutHeader() {
+    }
 
     public String getTitle() {
         return (titleTextView != null ? titleTextView.getText().toString() : "");
@@ -30,9 +33,6 @@ public class OptionItemLayoutHeader extends Fragment implements IActivity, IData
         if (titleTextView != null) {
             titleTextView.setText(title);
         }
-    }
-
-    public OptionItemLayoutHeader() {
     }
 
     @Nullable
