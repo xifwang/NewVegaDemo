@@ -129,7 +129,9 @@ public class RestHelper {
     }
 
     public void EndCall(Context context, int conferenceIndex) throws Exception {
-        String url = String.format(generateUrl(context, "/rest/conferences/0/connections/"), conferenceIndex);
+        String url = String.format(generateUrl(context, String.format(RestMap.getInstance()
+                        .getRestPath("EndCall_Format"), conferenceIndex)),
+                conferenceIndex);
 
         try {
             JSONObject json = new JSONObject("{\"action\":\"hangup\"}");

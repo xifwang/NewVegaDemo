@@ -14,7 +14,7 @@ public class RestMap {
     private RestMap() {
         map = new HashMap<String, String>();
         map.put("PlaceACall", "/rest/conferences?_dc=1439978043968");
-        map.put("EndCall", "/rest/conferences/0/connections/%d");
+        map.put("EndCall_Format", "/rest/conferences/0/connections/%d");
     }
 
     public static RestMap getInstance() {
