@@ -203,13 +203,4 @@ public class KeypadFragment extends VegaFragment implements IView, AdapterView.O
 
         fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, inCallFragment).commit();
     }
-
-    @Override
-    public void onCallEnded(JSONObject response) {
-    }
-
-    @Override
-    public void onEndCallError(VolleyError error) {
-        Toast.makeText(context, "Call has been ended.", Toast.LENGTH_SHORT).show();
-    }
 }

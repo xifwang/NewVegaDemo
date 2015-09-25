@@ -10,6 +10,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.interfaces.EndCallListener;
 import com.polycom.vega.interfaces.PairLitenser;
 import com.polycom.vega.interfaces.PlaceACallListener;
 import com.polycom.vega.prototype.HttpsTrustHelper;
@@ -27,6 +28,7 @@ public class RestHelper {
     private static RestHelper instance;
     private PairLitenser pairLitenser;
     private PlaceACallListener placeACallListener;
+    private EndCallListener endCallListener;
 
     private RestHelper() {
         CookieManager cookieManager = new CookieManager();
@@ -49,6 +51,10 @@ public class RestHelper {
 
     public void setPlaceACallListener(PlaceACallListener placeACallListener) {
         this.placeACallListener = placeACallListener;
+    }
+
+    public void setEndCallListener(EndCallListener endCallListener) {
+        this.endCallListener = endCallListener;
     }
 
     private String generateUrl(Context context, String restPath) throws Exception {
@@ -129,16 +135,16 @@ public class RestHelper {
             Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    if (placeACallListener != null) {
-                        placeACallListener.onCallEnded(response);
+                    if (endCallListener != null) {
+                        endCallListener.onCallEnded(response);
                     }
                 }
             };
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    if (placeACallListener != null) {
-                        placeACallListener.onEndCallError(error);
+                    if (endCallListener != null) {
+                        endCallListener.onEndCallError(error);
                     }
                 }
             };

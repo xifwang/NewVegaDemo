@@ -11,8 +11,4 @@ public interface PlaceACallListener {
     void onCallPlaced(JSONObject response);
 
     void onPlaceACallError(VolleyError error);
-
-    void onCallEnded(JSONObject response);
-
-    void onEndCallError(VolleyError error);
 }
