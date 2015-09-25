@@ -41,6 +41,16 @@
         android:layout_weight="1"
         android:max="100"
         android:text="Volume"
-        android:visibility="invisible" />
+        android:visibility="visible" />
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height= "match_parent"
+        android:layout_margin="20dp"
+        android:background="#fff"
+        android:id="@+id/fragment_local_gs_control_cameraimageview"
+        android:layout_below="@+id/fragment_local_gs_control_volumebutton"
+        android:layout_alignStart="@+id/fragment_local_gs_control_mutebutton" />
 
 </RelativeLayout>
