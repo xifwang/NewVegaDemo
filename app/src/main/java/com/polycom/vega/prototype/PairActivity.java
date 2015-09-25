@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.VolleyError;
@@ -148,6 +149,6 @@ public class PairActivity extends VegaActivity implements IView, PairLitenser {
 
     @Override
     public void onPairError(VolleyError error) {
-
+        Toast.makeText(PairActivity.this, (error.networkResponse != null ? error.networkResponse.statusCode + "" : error.getMessage()), Toast.LENGTH_LONG).show();
     }
 }

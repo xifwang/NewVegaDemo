@@ -2,7 +2,6 @@ package com.polycom.vega.resthelper;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -89,7 +88,9 @@ public class RestHelper {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, (error.networkResponse != null ? error.networkResponse.statusCode + "" : error.getMessage()), Toast.LENGTH_LONG).show();
+                if (pairLitenser != null) {
+                    pairLitenser.onPairError(error);
+                }
             }
         });
 
