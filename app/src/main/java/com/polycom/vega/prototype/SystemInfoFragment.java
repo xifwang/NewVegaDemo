@@ -1,28 +1,23 @@
 package com.polycom.vega.prototype;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
+import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 import com.polycom.vega.restobject.SystemObject;
 
 /**
  * Created by chengw on 9/14/2015.
  */
-public class SystemInfoFragment extends Fragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
-    private View fragment;
-    private Context context;
-
+public class SystemInfoFragment extends VegaFragment implements IView, IDataBind {
     private TextView gsName_textView = null;
     private TextView gsModel_textView = null;
     private TextView gsSwVersion_textView = null;
@@ -32,18 +27,15 @@ public class SystemInfoFragment extends Fragment implements IActivity, IDataBind
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
 
-        try {
-            fragment = inflater.inflate(R.layout.fragment_systeminfo, container, false);
-            context = fragment.getContext();
+        fragment = inflater.inflate(R.layout.fragment_systeminfo, container, false);
+        context = fragment.getContext();
 
-            initComponent();
-            initComponentState();
-            initAnimation();
-            dataBind();
-        } catch (Exception ex) {
-            Toast.makeText(getView().getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        initComponent();
+        initComponentState();
+        initAnimation();
+        dataBind();
 
         return fragment;
     }
@@ -91,11 +83,6 @@ public class SystemInfoFragment extends Fragment implements IActivity, IDataBind
 
     @Override
     public void dataBind() {
-
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
 
     }
 }

@@ -18,10 +18,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 import org.json.JSONObject;
 
@@ -33,7 +33,7 @@ import static android.widget.ImageView.*;
 /**
  * Created by xifwang on 9/16/2015.
  */
-public class LocalGsControlFragment extends VegaFragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
+public class LocalGsControlFragment extends VegaFragment implements IView, IDataBind, Thread.UncaughtExceptionHandler {
     private Button muteButton;
     private Button cameraButton;
     private SeekBar volSeekBar;
@@ -50,6 +50,7 @@ public class LocalGsControlFragment extends VegaFragment implements IActivity, I
     private boolean is2FingerPressed;
     private boolean isGestureTriggered;
     private CookieManager cookieManager;
+
 
     @Nullable
 
@@ -95,6 +96,7 @@ public class LocalGsControlFragment extends VegaFragment implements IActivity, I
         mPosX = mPosY = mCurPosX = mCurPosY = mFingerDistance = mCurFingerDistance = 0;
         is2FingerPressed = isGestureTriggered = false;
     }
+
 
     private View.OnClickListener muteButton_OnClickListener = new View.OnClickListener() {
         @Override
@@ -228,6 +230,7 @@ public class LocalGsControlFragment extends VegaFragment implements IActivity, I
             return true;
         }
     };
+
 
     @Override
     public void initComponentState() {

@@ -10,17 +10,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.polycom.vega.fundamental.CallingInformationObject;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
+import com.polycom.vega.fundamental.ExceptionHandler;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.EndCallListener;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
+import com.polycom.vega.resthelper.RestHelper;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -30,20 +29,36 @@ import java.util.TimerTask;
 /**
  * Created by xwcheng on 9/15/2015.
  */
-public class InCallFragment extends VegaFragment implements IActivity, Thread.UncaughtExceptionHandler, IDataBind {
+public class InCallFragment extends VegaFragment implements IView, IDataBind, EndCallListener {
     private TextView consumingTimeTextView;
     private TextView usernameTextView;
     private CallingInformationObject callingInfo;
+    private View.OnClickListener endCallImageButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            try {
+                endCall();
+            } catch (Exception e) {
+                ExceptionHandler.getInstance().handle(context, e);
+            }
+        }
+    };
+    private View.OnClickListener backImageButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
+    };
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         fragment = inflater.inflate(R.layout.fragment_incall, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         initComponent();
         initComponentState();
@@ -68,20 +83,6 @@ public class InCallFragment extends VegaFragment implements IActivity, Thread.Un
         ImageButton endCallImageButton = (ImageButton) fragment.findViewById(R.id.fragment_incall_endCallImageButton);
         endCallImageButton.setOnClickListener(endCallImageButton_OnClickListener);
     }
-
-    private View.OnClickListener endCallImageButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            endCall();
-        }
-    };
-
-    private View.OnClickListener backImageButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            getActivity().getSupportFragmentManager().popBackStack();
-        }
-    };
 
     public void initComponentState() {
     }
@@ -134,39 +135,20 @@ public class InCallFragment extends VegaFragment implements IActivity, Thread.Un
         }
     }
 
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+    private void endCall() throws Exception {
+        RestHelper.getInstance().setEndCallListener(this);
+        RestHelper.getInstance().EndCall(context, callingInfo.getConferenceIndex());
     }
 
-    private void endCall() {
-        if (callingInfo == null) {
-            return;
-        }
+    @Override
+    public void onCallEnded(JSONObject response) {
 
-        String url = application.getServerUrl() + "/rest/conferences/0/connections/" + callingInfo.getConferenceIndex();
+    }
 
-        try {
-            JSONObject json = new JSONObject("{\"action\":\"hangup\"}");
-            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                }
-            };
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, "Call has been ended.", Toast.LENGTH_SHORT).show();
-                    application.setCallingInfo(null);
-                    fragmentManager.popBackStack();
-                }
-            };
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
-
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonObjectRequest);
-        } catch (JSONException e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void onEndCallError(VolleyError error) {
+        Toast.makeText(context, "Call has been ended.", Toast.LENGTH_SHORT).show();
+        application.setCallingInfo(null);
+        fragmentManager.popBackStack();
     }
 }

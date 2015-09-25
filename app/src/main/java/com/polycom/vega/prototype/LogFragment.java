@@ -9,15 +9,15 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 /**
  * Created by zerocool on 9/22/15.
  */
-public class LogFragment extends VegaFragment implements IActivity, IDataBind, Thread.UncaughtExceptionHandler {
+public class LogFragment extends VegaFragment implements IView, IDataBind {
 
     private TextView logTextView;
     private View bottomBar;
@@ -25,6 +25,8 @@ public class LogFragment extends VegaFragment implements IActivity, IDataBind, T
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         fragment = inflater.inflate(R.layout.fragment_log, container, false);
         context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
@@ -80,11 +82,6 @@ public class LogFragment extends VegaFragment implements IActivity, IDataBind, T
 
     @Override
     public void dataBind() {
-
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
 
     }
 }

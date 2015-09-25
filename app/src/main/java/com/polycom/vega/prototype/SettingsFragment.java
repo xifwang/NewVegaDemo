@@ -18,10 +18,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -32,13 +32,12 @@ import java.util.TimerTask;
 /**
  * Created by xwcheng on 8/17/2015.
  */
-public class SettingsFragment extends VegaFragment implements IActivity, IDataBind {
+public class SettingsFragment extends VegaFragment implements IView, IDataBind {
     private Timer timer;
     private TextView titleTextView;
     private TextView errorTextView;
     private BroadcastReceiver broadcastReceiver;
     private HashMap<String, String> eventMap;
-    private VegaApplication application;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,10 +46,10 @@ public class SettingsFragment extends VegaFragment implements IActivity, IDataBi
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        this.initComponent();
-        this.initComponentState();
-        this.registerNotification();
-        this.dataBind();
+        initComponent();
+        initComponentState();
+        registerNotification();
+        dataBind();
 
         return fragment;
     }

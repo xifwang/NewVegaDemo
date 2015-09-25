@@ -7,42 +7,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
 import com.polycom.vega.fundamental.OptionObject;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
 
 import java.util.ArrayList;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class OptionListFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
+public class OptionListFragment extends VegaFragment implements IView, IDataBind, AdapterView.OnItemClickListener {
     private ArrayList<OptionObject> optionList;
     private OptionAdapter optionAdapter;
     private GridView optionListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        context = getActivity().getApplicationContext();
-        fragment = (RelativeLayout) inflater.inflate(R.layout.fragment_optionlist, container, false);
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
+        fragment = inflater.inflate(R.layout.fragment_optionlist, container, false);
+        context = fragment.getContext();
         application = (VegaApplication) getActivity().getApplication();
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        Thread.currentThread().setUncaughtExceptionHandler(this);
+        initComponent();
+        initComponentState();
+        initAnimation();
 
         return fragment;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        this.initComponent();
     }
 
     @Override
@@ -58,7 +53,6 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
         } else if (position == 4) {
             fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, new LocalGsControlFragment()).commit();
         }
-
     }
 
     @Override
@@ -75,10 +69,9 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
         optionList.add(new OptionObject(R.drawable.icon_usersettings, getString(R.string.option_item_userSettings_title), 0));
 //        optionList.add(new OptionObject(R.drawable.icon_favorite, getString(R.string.option_item_favorite_title), 0));
 
-
         optionAdapter = new OptionAdapter(context, optionList);
 
-        optionListView = (GridView) getView().findViewById(R.id.fragment_optionList_optionListView);
+        optionListView = (GridView) fragment.findViewById(R.id.fragment_optionList_optionListView);
         optionListView.setAdapter(optionAdapter);
         optionListView.setOnItemClickListener(this);
     }
@@ -101,10 +94,5 @@ public class OptionListFragment extends VegaFragment implements IActivity, IData
     @Override
     public void dataBind() {
 
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

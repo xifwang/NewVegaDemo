@@ -1,7 +1,6 @@
 package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,19 +14,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.melnykov.fab.FloatingActionButton;
 import com.polycom.vega.fundamental.CallingInformationObject;
 import com.polycom.vega.fundamental.ContactObject;
-import com.polycom.vega.fundamental.IActivity;
-import com.polycom.vega.fundamental.IDataBind;
+import com.polycom.vega.fundamental.ExceptionHandler;
 import com.polycom.vega.fundamental.VegaApplication;
 import com.polycom.vega.fundamental.VegaFragment;
+import com.polycom.vega.interfaces.IDataBind;
+import com.polycom.vega.interfaces.IView;
+import com.polycom.vega.interfaces.PlaceACallListener;
+import com.polycom.vega.resthelper.RestHelper;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,12 +34,41 @@ import java.util.Date;
 /**
  * Created by xwcheng on 9/11/2015.
  */
-public class ContactsFragment extends VegaFragment implements IActivity, IDataBind, AdapterView.OnItemClickListener, Thread.UncaughtExceptionHandler {
+public class ContactsFragment extends VegaFragment implements IView, IDataBind, AdapterView.OnItemClickListener, PlaceACallListener {
     private ListView contactListView;
     private FloatingActionButton addButton;
     private ArrayList<ContactObject> contacts;
     private ArrayAdapter<ContactObject> contactAdapter;
     private int conferenceIndex;
+    private ContactObject currentContact;
+    private View.OnClickListener addButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+            final View contentView = View.inflate(context, R.layout.fragment_addcontact_dialog_content, null);
+            contentView.setPadding(16, 16, 16, 16);
+            dialogBuilder.setView(contentView);
+            dialogBuilder.setTitle(R.string.add_contact_dialog_title);
+            dialogBuilder.setIcon(R.drawable.icon_default_user_avatar);
+            dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String displayName = ((EditText) contentView.findViewById(R.id.fragment_addcontact_dialog_content_displayNameEditText)).getText().toString().trim();
+                    String destinationIp = ((EditText) contentView.findViewById(R.id.fragment_addcontact_dialog_content_destinationIpEditText)).getText().toString().trim();
+
+                    contacts.add(new ContactObject(displayName, destinationIp));
+                    contactAdapter.notifyDataSetChanged();
+                }
+            });
+            dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialogBuilder.show();
+        }
+    };
 
     @Nullable
     @Override
@@ -76,35 +103,6 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
         addButton.setOnClickListener(addButton_OnClickListener);
     }
 
-    private View.OnClickListener addButton_OnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-            final View contentView = View.inflate(context, R.layout.fragment_addcontact_dialog_content, null);
-            contentView.setPadding(16, 16, 16, 16);
-            dialogBuilder.setView(contentView);
-            dialogBuilder.setTitle(R.string.add_contact_dialog_title);
-            dialogBuilder.setIcon(R.drawable.icon_default_user_avatar);
-            dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String displayName = ((EditText) contentView.findViewById(R.id.fragment_addcontact_dialog_content_displayNameEditText)).getText().toString().trim();
-                    String destinationIp = ((EditText) contentView.findViewById(R.id.fragment_addcontact_dialog_content_destinationIpEditText)).getText().toString().trim();
-
-                    contacts.add(new ContactObject(displayName, destinationIp));
-                    contactAdapter.notifyDataSetChanged();
-                }
-            });
-            dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            dialogBuilder.show();
-        }
-    };
-
     public void initComponentState() {
 
     }
@@ -121,19 +119,18 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        placeACall(contacts.get(position));
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        try {
+            placeACall(contacts.get(position));
+        } catch (Exception e) {
+            ExceptionHandler.getInstance().handle(context, e);
+        }
     }
 
     @Override
     public void dataBind() {
         contacts = new ArrayList<ContactObject>();
 
-        contacts.add(new ContactObject("王诚", "172.21.97.215"));
+        contacts.add(new ContactObject("王诚", "172.21.97.208"));
         contacts.add(new ContactObject("老孙", "172.21.97.151"));
 
         contactAdapter = new ContactsAdapter(context, contacts);
@@ -142,57 +139,41 @@ public class ContactsFragment extends VegaFragment implements IActivity, IDataBi
         contactListView.setOnItemClickListener(this);
     }
 
-    private void placeACall(final ContactObject contact) {
-        final String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/conferences?_dc=1439978043968";
-        final ProgressDialog dialog = new ProgressDialog(fragment.getContext());
-        dialog.setMessage(getString(R.string.message_placeACall));
+    private void placeACall(final ContactObject contact) throws Exception {
+        currentContact = contact;
+        JSONObject json = new JSONObject("{\"address\":\"" + contact.getDestinationIp() + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
+        RestHelper.getInstance().PlaceACall(context, json);
+        RestHelper.getInstance().setPlaceACallListener(this);
+    }
 
+    @Override
+    public void onCallPlaced(JSONObject response) {
+    }
+
+    @Override
+    public void onPlaceACallError(VolleyError error) {
+        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+
+        CallingInformationObject callingInfo = new CallingInformationObject();
         try {
-            dialog.show();
+            // TODO: Need to improve.
+            conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
 
-            JSONObject json = new JSONObject("{\"address\":\"" + contact.getDestinationIp() + "\",\"dialType\":\"AUTO\",\"rate\":\"0\"}");
-            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    dialog.dismiss();
-                }
-            };
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    dialog.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            callingInfo.setConferenceIndex(conferenceIndex);
+            callingInfo.setContact(currentContact);
+            callingInfo.setStartTime(new Date());
+        } catch (Exception ex) {
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
 
-                    CallingInformationObject callingInfo = new CallingInformationObject();
-                    try {
-                        // TODO: Need to improve.
-                        conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
-
-                        callingInfo.setConferenceIndex(conferenceIndex);
-                        callingInfo.setContact(contact);
-                        callingInfo.setStartTime(new Date());
-                        callingInfo.setDestinationFullUrl(url);
-                    } catch (Exception ex) {
-                        Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        return;
-                    }
-
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("callingInfo", callingInfo);
-
-                    InCallFragment inCallFragment = new InCallFragment();
-                    inCallFragment.setArguments(bundle);
-
-                    fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, inCallFragment).commit();
-                }
-            };
-
-            JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
-
-            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
-        } catch (JSONException e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("callingInfo", callingInfo);
+
+        InCallFragment inCallFragment = new InCallFragment();
+        inCallFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_main, inCallFragment).commit();
     }
 }

@@ -1,60 +1,47 @@
 package com.polycom.vega.prototype;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
-import com.polycom.vega.fundamental.IActivity;
+import com.polycom.vega.fundamental.VegaActivity;
 import com.polycom.vega.fundamental.VegaApplication;
+import com.polycom.vega.interfaces.IView;
+import com.polycom.vega.interfaces.PairLitenser;
 import com.polycom.vega.localstorage.LocalStorageHelper;
+import com.polycom.vega.resthelper.RestHelper;
 import com.polycom.vega.restobject.SystemObject;
 
-public class PairActivity extends AppCompatActivity implements IActivity, Thread.UncaughtExceptionHandler {
+import java.util.Locale;
+
+public class PairActivity extends VegaActivity implements IView, PairLitenser {
     private BootstrapEditText urlTextEdit = null;
     private BootstrapButton pairButton = null;
     private BootstrapButton demoButton = null;
     private VegaApplication application;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pair);
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
-
-        getSupportActionBar().hide();
-
-        initComponent();
-        initComponentState();
-    }
-
     private View.OnClickListener pairButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             if (TextUtils.isEmpty(urlTextEdit.getText().toString())) {
                 return;
             }
 
-            pair();
+            RestHelper.getInstance().setPairLitenser(PairActivity.this);
+            RestHelper.getInstance().Pair(PairActivity.this, urlTextEdit.getText().toString());
         }
     };
-
     private View.OnClickListener demoButtonClickListerner = new View.OnClickListener() {
         public void onClick(View view) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(PairActivity.this);
@@ -73,43 +60,18 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         }
     };
 
-    private void pair() {
-        String url = urlTextEdit.getText().toString();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
 
-        if (TextUtils.isEmpty(url)) {
-            return;
-        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pair);
 
-        if (!url.startsWith("https://")) {
-            url = "https://" + url;
-        }
+        getSupportActionBar().hide();
 
-        try {
-            HttpsTrustHelper.allowAllSSL();
-        } catch (Exception ex) {
-            Toast.makeText(PairActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        final String finalUrl = url;
-        StringRequest request = new StringRequest(url + "/rest/system", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-//                parseData(response);
-                application.setServerUrl(finalUrl);
-
-                Intent intent = new Intent(PairActivity.this, MainActivity.class);
-                intent.putExtra("response", response);
-
-                startActivity(intent);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), (error.networkResponse != null ? error.networkResponse.statusCode + "" : error.getMessage()), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        Volley.newRequestQueue(getApplicationContext()).add(request);
+        initUILanguage();
+        initComponent();
+        initComponentState();
     }
 
     private void parseData(String response) {
@@ -140,6 +102,20 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
         return super.onOptionsItemSelected(item);
     }
 
+    private void initUILanguage() {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        String language = LocalStorageHelper.getInstance().getLanguage(getApplicationContext());
+
+        if (!TextUtils.equals(configuration.locale.toString(), language)) {
+            configuration.locale = new Locale(language);
+            resources.updateConfiguration(configuration, displayMetrics);
+            this.finish();
+            this.startActivity(this.getIntent());
+        }
+    }
+
     @Override
     public void initComponent() {
         application = (VegaApplication) getApplicationContext();
@@ -164,7 +140,15 @@ public class PairActivity extends AppCompatActivity implements IActivity, Thread
     }
 
     @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+    public void onPaired(String response) {
+        Intent intent = new Intent(PairActivity.this, MainActivity.class);
+        intent.putExtra("response", response);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPairError(VolleyError error) {
+        Toast.makeText(PairActivity.this, (error.networkResponse != null ? error.networkResponse.statusCode + "" : error.getMessage()), Toast.LENGTH_LONG).show();
     }
 }

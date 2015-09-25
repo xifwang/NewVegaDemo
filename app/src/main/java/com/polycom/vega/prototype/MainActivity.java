@@ -1,24 +1,22 @@
 package com.polycom.vega.prototype;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.polycom.vega.fundamental.CallingInformationObject;
+import com.polycom.vega.fundamental.VegaActivity;
 import com.polycom.vega.fundamental.VegaApplication;
 
-public class MainActivity extends AppCompatActivity implements Thread.UncaughtExceptionHandler {
+public class MainActivity extends VegaActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Thread.currentThread().setUncaughtExceptionHandler(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Thread.currentThread().setUncaughtExceptionHandler(this);
 
         getSupportActionBar().hide();
         findViewById(R.id.activity_main_incall_header).setVisibility(View.GONE);
@@ -46,11 +44,6 @@ public class MainActivity extends AppCompatActivity implements Thread.UncaughtEx
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
-        Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
