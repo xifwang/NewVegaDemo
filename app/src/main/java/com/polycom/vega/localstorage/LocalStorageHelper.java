@@ -3,6 +3,8 @@ package com.polycom.vega.localstorage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.io.IOException;
+
 /**
  * Created by xwcheng on 9/7/2015.
  */

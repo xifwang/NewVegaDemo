@@ -1,8 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context="com.polycom.vega.prototype.FragmentAdministration">
 
     <Spinner
@@ -11,4 +13,50 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:spinnerMode="dialog" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/fragment_administration_changePasswordButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_administration_languageListSpinner"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/button_changepassword_text"
+        bootstrap:bb_icon_left="fa-key"
+        bootstrap:bb_type="warning" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/fragment_administration_logsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_administration_changePasswordButton"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/button_logs_text"
+        bootstrap:bb_icon_left="fa-file-text-o"
+        bootstrap:bb_type="primary" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/fragment_administration_checkUpdateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_administration_logsButton"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/button_checkupdate_text"
+        bootstrap:bb_icon_left="fa-check"
+        bootstrap:bb_type="default" />
+
+    <ProgressBar
+        android:id="@+id/fragment_administration_checkUpdateProgressBar"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
 </RelativeLayout>
