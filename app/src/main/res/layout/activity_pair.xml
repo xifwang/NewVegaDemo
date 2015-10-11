@@ -1,12 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:padding="16dp"
-                tools:context=".MainActivity">
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:padding="16dp"
+    tools:context=".MainActivity">
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/urlEditText"
@@ -28,9 +28,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/button_pair_text"
-        bootstrap:bb_icon_left="fa-compress"
-        bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_type="primary"/>
+        bootstrap:bootstrapBrand="primary"
+        bootstrap:roundedCorners="true" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/activity_pair_demoButton"
@@ -40,8 +39,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/button_demo_text"
-        bootstrap:bb_icon_left="fa-video-camera"
-        bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_type="warning"/>
+        bootstrap:bootstrapBrand="warning"
+        bootstrap:roundedCorners="true" />
 
 </RelativeLayout>

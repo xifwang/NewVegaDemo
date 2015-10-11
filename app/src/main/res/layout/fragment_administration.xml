@@ -23,8 +23,7 @@
         android:layout_marginRight="80dp"
         android:layout_marginTop="20dp"
         android:text="@string/button_changepassword_text"
-        bootstrap:bb_icon_left="fa-key"
-        bootstrap:bb_type="warning" />
+        bootstrap:bootstrapBrand="warning" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/fragment_administration_logsButton"
@@ -35,8 +34,7 @@
         android:layout_marginRight="80dp"
         android:layout_marginTop="20dp"
         android:text="@string/button_logs_text"
-        bootstrap:bb_icon_left="fa-file-text-o"
-        bootstrap:bb_type="primary" />
+        bootstrap:bootstrapBrand="primary" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/fragment_administration_checkUpdateButton"
@@ -46,9 +44,7 @@
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
         android:layout_marginTop="20dp"
-        android:text="@string/button_checkupdate_text"
-        bootstrap:bb_icon_left="fa-check"
-        bootstrap:bb_type="default" />
+        android:text="@string/button_checkupdate_text" />
 
     <ProgressBar
         android:id="@+id/fragment_administration_checkUpdateProgressBar"
