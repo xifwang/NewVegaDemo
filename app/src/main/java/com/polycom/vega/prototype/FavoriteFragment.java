@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.polycom.vega.fundamental.CallingInformationObject;
@@ -107,7 +106,7 @@ public class FavoriteFragment extends VegaFragment implements IDataBind, Adapter
 
     @Override
     public void onPlaceACallError(VolleyError error) {
-        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+        toast(error.getMessage());
 
         // TODO: Need to improve.
         conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
@@ -124,7 +123,7 @@ public class FavoriteFragment extends VegaFragment implements IDataBind, Adapter
             callingInfo.setConferenceIndex(conferenceIndex);
             callingInfo.setStartTime(new Date());
         } catch (Exception ex) {
-            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            toast(ex.getMessage());
 
             return;
         }

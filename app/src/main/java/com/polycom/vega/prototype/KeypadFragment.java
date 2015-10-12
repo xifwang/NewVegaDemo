@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.polycom.vega.fundamental.CallingInformationObject;
@@ -173,7 +172,7 @@ public class KeypadFragment extends VegaFragment implements IView, AdapterView.O
 
     @Override
     public void onPlaceACallError(VolleyError error) {
-        Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+        toast(error.getMessage());
 
         // TODO: Need to improve.
         conferenceIndex = Integer.parseInt(error.getMessage().substring(error.getMessage().indexOf("connections")).charAt(13) + "");
@@ -190,7 +189,7 @@ public class KeypadFragment extends VegaFragment implements IView, AdapterView.O
             callingInfo.setConferenceIndex(conferenceIndex);
             callingInfo.setStartTime(new Date());
         } catch (Exception ex) {
-            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            toast(error.getMessage());
 
             return;
         }
