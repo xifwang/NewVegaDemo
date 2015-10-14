@@ -36,6 +36,7 @@ import static android.widget.ImageView.*;
 public class LocalGsControlFragment extends VegaFragment implements IView, IDataBind, Thread.UncaughtExceptionHandler {
     private Button muteButton;
     private Button cameraButton;
+    private Button cameraControlButton;
     private SeekBar volSeekBar;
     private ImageView cameraImageView;
     private boolean isEndpointMuted;
@@ -88,6 +89,9 @@ public class LocalGsControlFragment extends VegaFragment implements IView, IData
         cameraButton = (Button) fragment.findViewById(R.id.fragment_local_gs_control_camerabutton);
         cameraButton.setOnClickListener(careraButton_OnClickListener);
 
+        cameraControlButton = (Button) fragment.findViewById(R.id.fragment_local_gs_control_cameracontrolbutton);
+        cameraControlButton.setOnClickListener(careraControlButton_OnClickListener);
+
         volSeekBar = (SeekBar) fragment.findViewById(R.id.fragment_local_gs_control_volumebutton);
         volSeekBar.setOnSeekBarChangeListener(volume_ChangeListener);
 
@@ -109,6 +113,22 @@ public class LocalGsControlFragment extends VegaFragment implements IView, IData
         @Override
         public void onClick(View view) {
             disableCamera();
+        }
+    };
+
+    private View.OnClickListener careraControlButton_OnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(cameraControlButton.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.icon_camcontrol_off).getConstantState())){
+                cameraImageView.setVisibility(View.VISIBLE);
+                cameraControlButton.setBackgroundResource(R.drawable.icon_camcontrol_on);
+                homescreenControl(0);
+            }
+            else{
+                cameraImageView.setVisibility(View.INVISIBLE);
+                cameraControlButton.setBackgroundResource(R.drawable.icon_camcontrol_off);
+                homescreenControl(1);
+            }
         }
     };
 
@@ -492,7 +512,9 @@ public class LocalGsControlFragment extends VegaFragment implements IView, IData
         }
     }
 
-
+    /*
+    direction: (0-5) means  {"up","right","down","left","zoom in","zoom out"}
+     */
     private void controlCamera(int direction) {
 
         //send REST to mute audio
@@ -508,6 +530,43 @@ public class LocalGsControlFragment extends VegaFragment implements IView, IData
             else {
                 json = new JSONObject("{\"action\":\"moveStop\"}");
             }
+
+            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+                @Override0co
+                public void onResponse(JSONObject  response) {
+
+                }
+            };
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            };
+            //Request.Method.POST
+            JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(url, json, responseListener, errorListener);
+            CookieHandler.setDefault(cookieManager);
+
+            Volley.newRequestQueue(getActivity().getApplicationContext()).add(jsonArrayRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+    private void homescreenControl(int isHomescreen) {
+
+        //send REST to mute audio
+        String url = ((VegaApplication) getActivity().getApplicationContext()).getServerUrl() + "/rest/system/ui";
+        String screenString[] = {"near","home"};
+
+
+        try {
+            JSONObject json;
+            json = new JSONObject("{\"action\":\"navigateToScreen\",\"id\":\"" + screenString[isHomescreen] + "\"}");
+
 
             Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
                 @Override
