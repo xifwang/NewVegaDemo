@@ -65,6 +65,7 @@
         android:layout_height="320dp"
         android:background="@drawable/touchpad"
         android:id="@+id/fragment_local_gs_control_cameraimageview"
-        android:layout_below="@+id/fragment_local_gs_control_volumebutton" />
+        android:layout_below="@+id/fragment_local_gs_control_volumebutton"
+        android:visibility="invisible" />
 
 </RelativeLayout>

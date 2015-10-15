@@ -34,6 +34,7 @@
     <string name="unmute">Unmute</string>
     <string name="cameraon">Camera On</string>
     <string name="cameraoff">Camera Off</string>
+    <string name="cameracontrol">Camera</string>
     <string name="en">American English</string>
     <string name="ar">العَرَبِيَّة</string>
     <string name="enGB">British English</string>

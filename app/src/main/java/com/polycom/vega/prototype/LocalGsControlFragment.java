@@ -119,7 +119,8 @@ public class LocalGsControlFragment extends VegaFragment implements IView, IData
     private View.OnClickListener careraControlButton_OnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(cameraControlButton.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.icon_camcontrol_off).getConstantState())){
+            //if(cameraControlButton.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.icon_camcontrol_off,null).getConstantState()))
+            if(cameraImageView.getVisibility() == View.INVISIBLE){
                 cameraImageView.setVisibility(View.VISIBLE);
                 cameraControlButton.setBackgroundResource(R.drawable.icon_camcontrol_on);
                 homescreenControl(0);
@@ -133,10 +134,11 @@ public class LocalGsControlFragment extends VegaFragment implements IView, IData
     };
 
     private SeekBar.OnSeekBarChangeListener volume_ChangeListener = new SeekBar.OnSeekBarChangeListener() {
+
+        int currentProgress = 0;
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            updateVolumeSeekBar(progress);
-
+            currentProgress = progress;
         }
 
         @Override
@@ -146,7 +148,7 @@ public class LocalGsControlFragment extends VegaFragment implements IView, IData
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-
+            updateVolumeSeekBar(currentProgress);
         }
 
     };
@@ -532,7 +534,7 @@ public class LocalGsControlFragment extends VegaFragment implements IView, IData
             }
 
             Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-                @Override0co
+                @Override
                 public void onResponse(JSONObject  response) {
 
                 }

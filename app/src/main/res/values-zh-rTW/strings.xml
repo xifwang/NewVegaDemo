@@ -35,6 +35,7 @@
     <string name="unmute">关闭静音</string>
     <string name="cameraon">开启摄像头</string>
     <string name="cameraoff">关闭摄像头</string>
+    <string name="cameracontrol">摄像头</string>
     <string name="ar">العَرَبِيَّة</string>
     <string name="enGB">British English</string>
     <string name="deDE">Deutsch</string>
